@@ -1,0 +1,1518 @@
+/* ============================================================
+   LANDING PAGE — Integra Psicanálise
+   CSS exclusivo: complementa o style.css global
+   ============================================================
+
+   ÍNDICE:
+   1. Reset e base da landing
+   2. Container
+   3. Header minimalista
+   4. Hero
+   5. Faixa de confiança
+   6. Seção Sobre
+   7. Seção Módulos
+   8. Depoimentos
+   9. Unidades
+   10. FAQ
+   11. CTA Final
+   12. Footer simples
+   13. Utilitários compartilhados (eyebrow, section-header, btns)
+   14. Responsividade
+   ============================================================ */
+
+
+/* ── 1. Reset / base ─────────────────────────────────────── */
+.lp-body {
+  /* Garante reset limpo sem conflitos com o style.css global */
+  background: var(--cor-creme, #F2E6DF);
+  /* overflow-x: clip em vez de hidden — clip corta overflow horizontal
+     SEM criar novo contexto de scroll, então position:fixed funciona
+     corretamente em iOS Safari (hidden quebra fixed em mobile) */
+  overflow-x: clip;
+}
+
+/* Garante que nenhuma seção cause overflow horizontal */
+.lp-body * {
+  max-width: 100%;
+}
+
+
+/* ── 2. Container ────────────────────────────────────────── */
+.lp-container {
+  width: min(100%, 1140px);
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 5vw, 2.5rem);
+}
+
+
+/* ── 3. Header minimalista ───────────────────────────────── */
+.lp-header {
+  position: sticky;
+  top: 0;
+  z-index: 800;
+  background: var(--cor-terracota, #8C3211);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.22);
+}
+
+.lp-header .lp-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 0.9rem;
+}
+
+/* Logo */
+.lp-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  text-decoration: none;
+}
+
+/* Imagem real do logo na landing */
+.lp-logo .logo-mark {
+  border-radius: 50%;
+  object-fit: contain;   /* contain = logo inteira, sem cortes */
+  display: block;
+  flex-shrink: 0;
+}
+
+.lp-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.lp-logo-nome {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--cor-creme, #F2E6DF);
+  letter-spacing: 0.01em;
+}
+
+.lp-logo-sub {
+  font-family: var(--fonte-cursivo, 'Dancing Script', cursive);
+  font-size: 0.72rem;
+  color: rgba(242, 230, 223, 0.72);
+}
+
+/* CTA do header */
+.lp-header-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: #25D366;
+  color: #fff;
+  font-family: var(--fonte-corpo, 'Inter', sans-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.55rem 1.15rem;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.lp-header-cta:hover {
+  background: #1da851;
+  transform: translateY(-1px);
+}
+
+
+/* ── 4. Hero ─────────────────────────────────────────────── */
+.lp-hero {
+  position: relative;
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+}
+
+/* Foto de fundo */
+.lp-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 20%;
+  background-repeat: no-repeat;
+}
+
+/* Overlay escuro gradiente */
+.lp-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(61, 16, 8, 0.88) 0%,
+    rgba(44, 26, 14, 0.72) 60%,
+    rgba(61, 16, 8, 0.55) 100%
+  );
+}
+
+/* Conteúdo */
+.lp-hero-content {
+  position: relative;
+  z-index: 2;
+  padding-block: 7rem 5rem;
+  max-width: 760px;
+}
+
+/* Badge hero */
+.lp-badge-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(168, 198, 64, 0.15);
+  border: 1px solid rgba(168, 198, 64, 0.4);
+  color: var(--cor-lima, #A8C640);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  margin-bottom: 1.5rem;
+}
+
+/* Título hero */
+.lp-hero-titulo {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: clamp(2.6rem, 5.5vw, 4.2rem);
+  font-weight: 700;
+  color: var(--cor-creme, #F2E6DF);
+  line-height: 1.1;
+  margin-bottom: 1.25rem;
+}
+
+.lp-hero-titulo em {
+  font-style: italic;
+  color: var(--cor-creme, #F2E6DF);
+}
+
+/* Subtítulo hero */
+.lp-hero-sub {
+  font-family: var(--fonte-corpo, 'Inter', sans-serif);
+  font-size: 1.05rem;
+  color: rgba(242, 230, 223, 0.82);
+  line-height: 1.65;
+  margin-bottom: 2.25rem;
+  max-width: 580px;
+}
+
+.lp-hero-sub strong {
+  color: var(--cor-creme, #F2E6DF);
+}
+
+/* Números no hero */
+.lp-hero-numeros {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(242, 230, 223, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(4px);
+  width: fit-content;
+}
+
+.lp-numero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.lp-numero-val {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cor-lima, #A8C640);
+  line-height: 1;
+}
+
+.lp-numero-leg {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(242, 230, 223, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.2rem;
+}
+
+.lp-numero-sep {
+  width: 1px;
+  height: 32px;
+  background: rgba(242, 230, 223, 0.2);
+}
+
+/* CTAs do hero */
+.lp-hero-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+
+/* ── 5. Faixa de confiança ───────────────────────────────── */
+.lp-trust {
+  background: var(--cor-terracota, #8C3211);
+  padding: 1.1rem 0;
+}
+
+.lp-trust-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.lp-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(242, 230, 223, 0.88);
+}
+
+.lp-trust-item i {
+  color: var(--cor-lima, #A8C640);
+  font-size: 0.9rem;
+}
+
+.lp-trust-sep {
+  width: 1px;
+  height: 18px;
+  background: rgba(242, 230, 223, 0.2);
+}
+
+
+/* ── 6. Seção Sobre ──────────────────────────────────────── */
+.lp-sobre {
+  background: var(--cor-creme, #F2E6DF);
+  padding: 6rem 0;
+}
+
+.lp-sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+/* Foto com badge */
+.lp-sobre-foto {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.lp-sobre-foto img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.lp-sobre-foto-badge {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(140, 50, 17, 0.9);
+  color: var(--cor-creme, #F2E6DF);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  backdrop-filter: blur(4px);
+}
+
+/* Texto sobre */
+.lp-sobre-texto h2 {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--cor-texto, #2C1A0E);
+  line-height: 1.2;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.lp-sobre-texto h2 em {
+  font-style: italic;
+  color: var(--cor-terracota, #8C3211);
+}
+
+.lp-sobre-texto p {
+  font-size: 0.95rem;
+  color: rgba(44, 26, 14, 0.72);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* Lista de diferenciais */
+.lp-diferenciais {
+  list-style: none;
+  padding: 0;
+  margin: 1.75rem 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.lp-diferenciais li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+
+.lp-dif-icon {
+  flex-shrink: 0;
+  width: 36px; height: 36px;
+  background: rgba(140, 50, 17, 0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--cor-terracota, #8C3211);
+  font-size: 0.9rem;
+}
+
+.lp-diferenciais li strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cor-texto, #2C1A0E);
+  margin-bottom: 0.2rem;
+}
+
+.lp-diferenciais li p {
+  font-size: 0.82rem;
+  color: rgba(44, 26, 14, 0.62);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Link "saiba mais" */
+.lp-link-mais {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cor-terracota, #8C3211);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: gap 0.2s;
+}
+
+.lp-link-mais:hover {
+  gap: 0.6rem;
+}
+
+
+/* ── 7. Seção Módulos ────────────────────────────────────── */
+.lp-modulos {
+  background: #2a0805;
+  padding: 6rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Textura sutil */
+.lp-modulos::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(242,230,223,0.04) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+/* Header das seções com fundo escuro */
+.lp-modulos .lp-section-header h2 {
+  color: var(--cor-creme, #F2E6DF);
+}
+
+.lp-modulos .lp-section-header h2 em {
+  color: var(--cor-lima, #A8C640);
+}
+
+.lp-modulos .lp-section-header p {
+  color: rgba(242, 230, 223, 0.65);
+}
+
+/* Grid de módulos: 5 em linha desktop, 2-3 abaixo */
+.lp-modulos-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+/* Card de módulo */
+/* ── Cards de Módulo — fundo branco, texto terracota ─────── */
+.lp-mod-card {
+  background: var(--cor-branco, #FAF8F5);
+  border: 1px solid rgba(140, 50, 17, 0.12);
+  border-top: 3px solid var(--cor-terracota, #8C3211);
+  border-radius: 10px;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  transition: background 0.26s ease, transform 0.2s ease, box-shadow 0.26s ease;
+  cursor: default;
+}
+
+/* Hover: fundo terracota, letras brancas */
+.lp-mod-card:hover {
+  background: var(--cor-terracota, #8C3211);
+  border-top-color: var(--cor-terracota, #8C3211);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(140, 50, 17, 0.35);
+}
+
+/* Card de destaque (Módulo V) — mesmo estilo, sem diferença */
+.lp-mod-card--destaque {
+  border-top-color: var(--cor-terracota, #8C3211);
+}
+
+/* Número romano — terracota no fundo branco */
+.lp-mod-num {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--cor-terracota, #8C3211);
+  line-height: 1;
+  opacity: 0.7;
+  transition: color 0.26s ease, opacity 0.26s ease;
+}
+
+.lp-mod-card:hover .lp-mod-num {
+  color: rgba(242, 230, 223, 0.7);
+  opacity: 1;
+}
+
+/* Título — terracota no fundo branco */
+.lp-mod-info h3 {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--cor-terracota, #8C3211);
+  margin-bottom: 0.35rem;
+  line-height: 1.3;
+  transition: color 0.26s ease;
+}
+
+.lp-mod-card:hover .lp-mod-info h3 {
+  color: var(--cor-creme, #F2E6DF);
+}
+
+/* Descrição — terracota suave */
+.lp-mod-info p {
+  font-size: 0.78rem;
+  color: rgba(140, 50, 17, 0.62);
+  line-height: 1.5;
+  margin: 0;
+  transition: color 0.26s ease;
+}
+
+.lp-mod-card:hover .lp-mod-info p {
+  color: rgba(242, 230, 223, 0.72);
+}
+
+.lp-mod-tag {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cor-terracota, #8C3211);
+  background: rgba(140, 50, 17, 0.1);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  transition: color 0.26s ease, background 0.26s ease;
+}
+
+/* Tag no hover: limão sobre terracota */
+.lp-mod-card:hover .lp-mod-tag {
+  color: var(--cor-lima, #A8C640);
+  background: rgba(168, 198, 64, 0.18);
+}
+
+/* CTA abaixo dos módulos */
+.lp-modulos-cta {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+
+/* ── 8. Depoimentos ──────────────────────────────────────── */
+.lp-depoimentos {
+  background: var(--cor-creme, #F2E6DF);
+  padding: 6rem 0;
+}
+
+.lp-dep-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.lp-dep-card {
+  background: #FAF8F5;
+  border-radius: 12px;
+  padding: 1.75rem;
+  border: 1px solid rgba(140, 50, 17, 0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+/* Aspas decorativas */
+.lp-dep-card::before {
+  content: '\201C';
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 3.5rem;
+  color: rgba(86, 96, 67, 0.15);
+  line-height: 0.8;
+  display: block;
+  margin-bottom: -0.5rem;
+}
+
+.lp-dep-card p {
+  font-size: 0.9rem;
+  color: rgba(44, 26, 14, 0.75);
+  line-height: 1.65;
+  font-style: italic;
+  margin: 0;
+}
+
+.lp-dep-card footer {
+  /* Reset: anula o estilo global `footer { background: #1A1A1A; padding: 4rem 0; }`
+     que vem do style.css e afeta todos os elementos <footer> da página.       */
+  background: transparent !important;
+  padding: 0 !important;
+  color: var(--cor-texto, #2C1A0E) !important;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.lp-dep-avatar {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--cor-terracota, #8C3211);
+  color: var(--cor-creme, #F2E6DF);
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.lp-dep-card footer strong {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--cor-texto, #2C1A0E);
+}
+
+.lp-dep-card footer span {
+  font-size: 0.74rem;
+  color: rgba(44, 26, 14, 0.5);
+}
+
+
+/* ── 9. Unidades ─────────────────────────────────────────── */
+.lp-unidades {
+  background: var(--cor-terracota, #8C3211);
+  padding: 5rem 0;
+}
+
+.lp-unidades .lp-section-header h2 {
+  color: var(--cor-creme, #F2E6DF);
+}
+
+.lp-unidades .lp-section-header h2 em {
+  color: var(--cor-lima, #A8C640);
+}
+
+.lp-unidades .lp-section-header p {
+  color: rgba(242, 230, 223, 0.65);
+}
+
+.lp-unid-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
+}
+
+.lp-unid-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(242,230,223,0.12);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.lp-unid-item--sede {
+  border-color: rgba(168,198,64,0.35);
+  background: rgba(168,198,64,0.08);
+}
+
+.lp-unid-item i {
+  color: rgba(242,230,223,0.5);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.lp-unid-item--sede i {
+  color: var(--cor-lima, #A8C640);
+}
+
+.lp-unid-item strong {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cor-creme, #F2E6DF);
+  margin-bottom: 0.15rem;
+}
+
+.lp-unid-item span {
+  font-size: 0.72rem;
+  color: rgba(242, 230, 223, 0.5);
+}
+
+/* Telefone das unidades */
+.lp-unid-tel {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: rgba(242, 230, 223, 0.45);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  margin-top: 0.15rem;
+}
+
+.lp-unid-tel i {
+  font-size: 0.62rem;
+  margin-right: 0.2rem;
+}
+
+/* ── Card de votação — Próxima cidade ───────────────────── */
+.lp-voto-card {
+  margin-top: 2rem;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #2a0805 0%, #3d1008 60%, #2a0805 100%);
+  border: 1px solid rgba(168, 198, 64, 0.25);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Brilho decorativo */
+.lp-voto-card::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(168,198,64,0.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.lp-voto-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 1.75rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.lp-voto-icon {
+  flex-shrink: 0;
+  width: 64px; height: 64px;
+  background: rgba(168, 198, 64, 0.1);
+  border: 1px solid rgba(168, 198, 64, 0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 6px;
+}
+
+/* ── Bússola SVG ─────────────────────────────────────────── */
+.lp-compass-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Agulha — oscila suavemente em torno do centro (50px 50px no viewBox 100×100) */
+.lp-compass-needle {
+  transform-origin: 50px 50px;
+  animation: lp-busca-norte 2.8s ease-in-out infinite;
+}
+
+/* Oscilação amortecida: imita uma bússola procurando o norte */
+@keyframes lp-busca-norte {
+  0%   { transform: rotate(-38deg); }
+  16%  { transform: rotate(36deg); }
+  30%  { transform: rotate(-26deg); }
+  43%  { transform: rotate(20deg); }
+  55%  { transform: rotate(-14deg); }
+  65%  { transform: rotate(9deg); }
+  74%  { transform: rotate(-5deg); }
+  82%  { transform: rotate(3deg); }
+  89%  { transform: rotate(-2deg); }
+  95%  { transform: rotate(1deg); }
+  100% { transform: rotate(-38deg); }
+}
+
+/* Respeita preferência de movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  .lp-compass-needle {
+    animation: none;
+    transform: rotate(0deg);
+  }
+}
+
+.lp-voto-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.lp-voto-eyebrow {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cor-lima, #A8C640);
+  margin-bottom: 0.35rem;
+}
+
+.lp-voto-texto h3 {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--cor-creme, #F2E6DF);
+  margin: 0 0 0.35rem;
+  line-height: 1.25;
+}
+
+.lp-voto-texto p {
+  font-size: 0.82rem;
+  color: rgba(242, 230, 223, 0.65);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.lp-voto-texto p strong {
+  color: var(--cor-creme, #F2E6DF);
+}
+
+.lp-voto-cta {
+  flex-shrink: 0;
+}
+
+/* Botão do card de votação */
+.lp-btn-voto {
+  background: var(--cor-lima, #A8C640);
+  color: #1a2210;
+  border: 2px solid transparent;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.4rem;
+  box-shadow: 0 4px 16px rgba(168, 198, 64, 0.28);
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.lp-btn-voto:hover {
+  background: #bcd94a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(168, 198, 64, 0.42);
+}
+
+@media (max-width: 820px) {
+  .lp-voto-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  .lp-voto-cta { width: 100%; }
+  .lp-btn-voto { width: 100%; justify-content: center; }
+}
+
+
+/* ── 10. FAQ ─────────────────────────────────────────────── */
+.lp-faq {
+  background: #faf8f5;
+  padding: 6rem 0;
+}
+
+.lp-faq-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+.lp-faq-item {
+  background: #FAF8F5;
+  border-radius: 10px;
+  padding: 1.5rem;
+  border: 1px solid rgba(140, 50, 17, 0.1);
+}
+
+.lp-faq-item h3 {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--cor-texto, #2C1A0E);
+  margin-bottom: 0.65rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  line-height: 1.3;
+}
+
+.lp-faq-item h3 i {
+  color: var(--cor-terracota, #8C3211);
+  font-size: 0.85rem;
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+.lp-faq-item p {
+  font-size: 0.86rem;
+  color: rgba(44, 26, 14, 0.68);
+  line-height: 1.65;
+  margin: 0;
+}
+
+.lp-faq-item p strong {
+  color: var(--cor-terracota, #8C3211);
+}
+
+
+/* ── 11. CTA Final ───────────────────────────────────────── */
+.lp-cta-final {
+  background: linear-gradient(140deg, #2a0805 0%, #3d1008 50%, #2a0805 100%);
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Brilho decorativo */
+.lp-cta-final::before {
+  content: '';
+  position: absolute;
+  top: -100px; left: 50%;
+  transform: translateX(-50%);
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(168,198,64,0.1) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.lp-cta-final-inner {
+  position: relative;
+  z-index: 1;
+}
+
+.lp-cta-icone {
+  margin-bottom: 1.5rem;
+  opacity: 0.9;
+  display: flex;             /* centraliza o <img> horizontalmente */
+  justify-content: center;
+}
+
+.lp-cta-final h2 {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  color: var(--cor-creme, #F2E6DF);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.lp-cta-final p {
+  font-size: 1rem;
+  color: rgba(242, 230, 223, 0.72);
+  line-height: 1.65;
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+}
+
+.lp-cta-final-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.lp-cta-nota {
+  font-size: 0.78rem;
+  color: rgba(242, 230, 223, 0.45);
+  display: block;
+  text-align: center;
+  line-height: 1.5;
+  margin: 0 !important;
+}
+
+.lp-cta-nota i {
+  color: var(--cor-lima, #A8C640);
+  vertical-align: middle;
+  margin-right: 0.35rem;
+  font-size: 0.85rem;
+}
+
+
+/* ── 12. Footer simples ──────────────────────────────────── */
+.lp-footer {
+  background: #1a0503;
+  padding: 1.25rem 0;
+}
+
+.lp-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.lp-footer p {
+  font-size: 0.78rem;
+  color: rgba(242, 230, 223, 0.45);
+  margin: 0;
+}
+
+.lp-footer p strong {
+  color: rgba(242, 230, 223, 0.7);
+}
+
+.lp-footer-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--cor-lima, #A8C640);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.lp-footer-link:hover {
+  opacity: 0.75;
+}
+
+
+/* ── 13. Utilitários compartilhados ──────────────────────── */
+
+/* Eyebrow (rótulo pequeno acima do título) */
+.lp-eyebrow {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cor-terracota, #8C3211);
+  margin-bottom: 0.5rem;
+}
+
+.lp-eyebrow--light {
+  color: var(--cor-lima, #A8C640);
+}
+
+/* Section header */
+.lp-section-header {
+  text-align: center;
+  max-width: 620px;
+  margin-inline: auto;
+}
+
+.lp-section-header h2 {
+  font-family: var(--fonte-titulo, 'Cormorant Garamond', serif);
+  font-size: clamp(1.85rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--cor-texto, #2C1A0E);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+}
+
+.lp-section-header h2 em {
+  font-style: italic;
+  color: var(--cor-terracota, #8C3211);
+}
+
+.lp-section-header p {
+  font-size: 0.95rem;
+  color: rgba(44, 26, 14, 0.62);
+  line-height: 1.6;
+}
+
+/* Botões da landing */
+.lp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--fonte-corpo, 'Inter', sans-serif);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  padding: 0.9rem 1.75rem;
+  border-radius: 8px;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+  border: 2px solid transparent;
+  white-space: nowrap;
+  position: relative; /* necessário para o flash da logo e ripple ::after */
+  overflow: hidden;
+}
+
+.lp-btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Primário — WhatsApp verde */
+.lp-btn-primary {
+  background: #25D366;
+  color: #fff;
+  border-color: #25D366;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
+}
+
+.lp-btn-primary:hover {
+  background: #1da851;
+  border-color: #1da851;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+}
+
+/* Outline escuro (hero) */
+.lp-btn-outline {
+  background: transparent;
+  color: var(--cor-creme, #F2E6DF);
+  border-color: rgba(242, 230, 223, 0.4);
+}
+
+.lp-btn-outline:hover {
+  border-color: var(--cor-creme, #F2E6DF);
+  background: rgba(242, 230, 223, 0.08);
+}
+
+/* Outline claro (CTA final) */
+.lp-btn-outline-light {
+  background: transparent;
+  color: rgba(242, 230, 223, 0.8);
+  border-color: rgba(242, 230, 223, 0.25);
+}
+
+.lp-btn-outline-light:hover {
+  border-color: rgba(242, 230, 223, 0.6);
+  background: rgba(242, 230, 223, 0.08);
+  color: var(--cor-creme, #F2E6DF);
+}
+
+/* Ghost (sobre fundo escuro, sem fill) */
+.lp-btn-ghost {
+  background: transparent;
+  color: rgba(242, 230, 223, 0.65);
+  border-color: rgba(242, 230, 223, 0.2);
+  font-size: 0.83rem;
+}
+
+.lp-btn-ghost:hover {
+  color: var(--cor-lima, #A8C640);
+  border-color: rgba(168, 198, 64, 0.4);
+  background: rgba(168, 198, 64, 0.06);
+}
+
+
+/* ── 14. Responsividade ──────────────────────────────────── */
+
+/* Tablet grande */
+@media (max-width: 1060px) {
+  .lp-modulos-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .lp-unid-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablet */
+@media (max-width: 820px) {
+  .lp-hero {
+    min-height: 100svh;
+  }
+
+  /* ── Padding das seções no tablet ── */
+  .lp-sobre,
+  .lp-modulos,
+  .lp-depoimentos,
+  .lp-faq,
+  .lp-cta-final { padding: 4.5rem 0; }
+  .lp-unidades  { padding: 4rem 0; }
+
+  .lp-sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .lp-sobre-foto img {
+    height: 280px;
+  }
+
+  .lp-dep-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-modulos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-hero-numeros {
+    gap: 0.75rem;
+    padding: 1rem 1.1rem;
+  }
+
+  .lp-numero-sep {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 580px) {
+  .lp-header .lp-container {
+    padding-block: 0.75rem;
+  }
+
+  .lp-logo-sub {
+    display: none;
+  }
+
+  .lp-header-cta {
+    font-size: 0.75rem;
+    padding: 0.48rem 0.85rem;
+  }
+
+  .lp-hero-content {
+    padding-block: 5rem 4rem;
+  }
+
+  .lp-hero-ctas {
+    flex-direction: column;
+  }
+
+  .lp-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .lp-trust-inner {
+    gap: 0.9rem;
+  }
+
+  .lp-trust-sep {
+    display: none;
+  }
+
+  .lp-modulos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-unid-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lp-cta-final-btns {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .lp-footer-inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .lp-hero-numeros {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  /* ── Padding das seções em mobile ── */
+  .lp-sobre,
+  .lp-modulos,
+  .lp-depoimentos,
+  .lp-faq,
+  .lp-cta-final { padding: 3.5rem 0; }
+  .lp-unidades  { padding: 3rem 0; }
+
+  /* ── Hero — texto e espaçamento menores ── */
+  .lp-hero-content   { padding-block: 4.5rem 3rem; }
+  .lp-hero-titulo    { font-size: 2.1rem; line-height: 1.15; }
+  .lp-hero-sub       { font-size: 0.92rem; margin-bottom: 1.75rem; }
+  .lp-numero-val     { font-size: 1.55rem; }
+  .lp-badge-hero     { font-size: 0.65rem; }
+
+  /* ── Section header ── */
+  .lp-section-header           { max-width: 100%; }
+  .lp-section-header h2        { font-size: 1.7rem; }
+
+  /* ── Sobre ── */
+  .lp-sobre-grid   { gap: 2rem; }
+  .lp-sobre-foto img { height: 200px; }
+
+  /* ── Módulos ── */
+  .lp-modulos-grid { gap: 0.7rem; margin-top: 1.75rem; }
+  .lp-mod-card     { padding: 1.1rem 1rem; }
+
+  /* ── Depoimentos ── */
+  .lp-dep-grid { gap: 1rem; margin-top: 1.75rem; }
+  .lp-dep-card { padding: 1.25rem; }
+
+  /* ── FAQ ── */
+  .lp-faq-grid { gap: 0.6rem; margin-top: 1.75rem; }
+
+  /* ── Unidades ── */
+  .lp-unid-grid  { gap: 0.7rem; margin-top: 1.75rem; }
+  .lp-voto-card  { margin-top: 1.5rem; }
+
+  /* ── CTA final ── */
+  .lp-cta-final-inner { text-align: center; }
+  .lp-cta-final h2    { font-size: 1.8rem; }
+  .lp-cta-final p     { font-size: 0.9rem; }
+}
+
+/* Celulares muito pequenos (≤ 380px) */
+@media (max-width: 380px) {
+  .lp-hero-titulo  { font-size: 1.9rem; }
+  .lp-logo-nome    { font-size: 0.9rem; }
+  .lp-header-cta   { font-size: 0.7rem; padding: 0.42rem 0.7rem; }
+  .lp-hero-numeros { gap: 0.4rem; padding: 0.7rem 0.75rem; }
+  .lp-numero-val   { font-size: 1.35rem; }
+  .lp-section-header h2 { font-size: 1.55rem; }
+  .lp-sobre,
+  .lp-modulos,
+  .lp-depoimentos,
+  .lp-faq,
+  .lp-cta-final { padding: 2.75rem 0; }
+  .lp-unidades  { padding: 2.5rem 0; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   12. FAQ ACCORDION (landing.js)
+   O JavaScript em landing.js adiciona/remove .aberto.
+   A resposta (.lp-faq-item p) colapsa com transição suave.
+   ════════════════════════════════════════════════════════════════ */
+
+/* Torna o h3 interativo */
+.lp-faq-item h3 {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Indicador +/− no lado direito do h3 */
+.lp-faq-item h3::after {
+  content: '+';
+  font-family: var(--fonte-texto, 'Inter', sans-serif);
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--cor-terracota, #8C3211);
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: opacity 0.2s ease;
+}
+
+.lp-faq-item.aberto h3::after {
+  content: '−';
+}
+
+/* Resposta colapsável — começa oculta */
+.lp-faq-item p {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  margin-top: 0;
+  transition: max-height 0.4s ease, opacity 0.32s ease, margin-top 0.32s ease;
+}
+
+.lp-faq-item.aberto p {
+  max-height: 280px;
+  opacity: 1;
+  margin-top: 0.75rem;
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   13. BOTÃO VOLTAR AO TOPO (landing)
+   Aparece ao rolar 400px, sombreado em terracota.
+   ════════════════════════════════════════════════════════════════ */
+#lp-back-to-top {
+  position: fixed;
+  bottom: 9rem;
+  right: 1.75rem;
+  width: 44px;
+  height: 44px;
+  background: var(--cor-terracota, #8C3211);
+  color: #FAF8F5;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.3s ease, transform 0.3s ease, background 0.2s ease;
+  z-index: 998;
+  box-shadow: 0 2px 14px rgba(140, 50, 17, 0.4);
+}
+
+#lp-back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#lp-back-to-top:hover {
+  background: #a3391e;
+  transform: translateY(-3px);
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   14. WHATSAPP FLOAT — ANIMAÇÃO DE ATENÇÃO (landing.js)
+   Classe .lp-wa-atencao é adicionada/removida pelo JavaScript.
+   ════════════════════════════════════════════════════════════════ */
+@keyframes lp-wa-wiggle {
+  0%   { transform: rotate(0deg)   scale(1); }
+  15%  { transform: rotate(-12deg) scale(1.12); }
+  30%  { transform: rotate(12deg)  scale(1.14); }
+  45%  { transform: rotate(-8deg)  scale(1.1); }
+  60%  { transform: rotate(8deg)   scale(1.07); }
+  75%  { transform: rotate(-4deg)  scale(1.03); }
+  90%  { transform: rotate(4deg)   scale(1.01); }
+  100% { transform: rotate(0deg)   scale(1); }
+}
+
+.lp-body .whatsapp-float.lp-wa-atencao {
+  animation: lp-wa-wiggle 0.75s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+
+/* ============================================================
+   FLASH DA LOGO NOS BOTÕES
+   Ao clicar em qualquer .lp-btn, injeta o símbolo da Integra
+   animado sobre o botão — idêntico ao efeito do site principal.
+   ============================================================ */
+
+/* Camada sobreposta que carrega o SVG */
+.lp-btn-logo-flash {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  animation: lp-btn-bloom 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* SVG da logo — tamanho proporcional ao botão */
+.lp-btn-logo-flash .lp-btn-flash-svg {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  filter:
+    drop-shadow(0 0 8px rgba(168, 198, 64, 0.55))
+    drop-shadow(0 0 18px rgba(242, 230, 223, 0.3));
+  animation: none !important; /* o bloom do pai já cuida da entrada/saída */
+}
+
+/* Corrige ponto de rotação ao escalar para 52px */
+.lp-btn-logo-flash .lp-btn-flash-svg .lp-spin-group,
+.lp-btn-logo-flash .lp-btn-flash-svg .lp-ring-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: lp-flash-spin 2.4s linear infinite;
+}
+
+@keyframes lp-flash-spin {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
+
+/* Bloom elegante: nasce pequeno → floresce → dissolve */
+@keyframes lp-btn-bloom {
+  0%   { opacity: 0; transform: scale(0.28) rotate(-15deg); }
+  22%  { opacity: 1; transform: scale(1.1)  rotate(2deg);   }
+  50%  { opacity: 0.92; transform: scale(1.0) rotate(0deg); }
+  100% { opacity: 0; transform: scale(1.5)  rotate(8deg);   }
+}
+
+/* ============================================================
+   ANIMAÇÃO DE ATENÇÃO NOS BOTÕES (CSS-only, periódica)
+   Double-bounce suave que dispara a cada 6s para chamar atenção
+   sem incomodar. Aplicado nos CTAs primários (verde WhatsApp).
+   ============================================================ */
+@keyframes lp-btn-atencao {
+  /* Pausa longa → duplo salto rápido → volta ao normal */
+  0%, 100% { transform: translateY(0) scale(1);    }
+  4%        { transform: translateY(-7px) scale(1.05); }
+  8%        { transform: translateY(-1px) scale(1.01); }
+  12%       { transform: translateY(-5px) scale(1.03); }
+  16%       { transform: translateY(0)    scale(1);    }
+}
+
+/* Aplica nos botões primários (WhatsApp CTA) */
+.lp-btn-primary {
+  animation: lp-btn-atencao 6s ease-in-out infinite 3s;
+}
+
+/* Pausa a animação no hover para não conflitar com translateY do hover */
+.lp-btn-primary:hover,
+.lp-btn-primary:focus {
+  animation-play-state: paused;
+}
+
+
+/* Ripple de toque nos botões da landing */
+.lp-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.18);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.lp-btn:active::after {
+  transform: scale(1);
+  opacity: 1;
+  transition: none;
+}

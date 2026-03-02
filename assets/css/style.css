@@ -1,0 +1,4423 @@
+﻿/* ============================================================
+   INTEGRA PSICANÁLISE — A NOVA ESCOLA
+   style.css — Folha de estilos global
+
+   ESTRUTURA DO ARQUIVO:
+   1.  Custom Properties (variáveis CSS — paleta, tipografia, espaçamentos)
+   2.  Reset & Base
+   3.  Container e layout utilitário
+   4.  Tipografia global
+   5.  Botões
+   6.  Animações e transições
+   7.  Navbar (fixa, com estado .scrolled)
+   8.  Menu mobile (drawer lateral)
+   9.  Botão Back-to-top
+   10. Hero (seção 1)
+   11. Sobre (seção 2)
+   12. Pilares (bloco dentro da seção Sobre, fundo verde)
+   13. Abordagens (seção 3)
+   14. Grade Curricular / Acordeões (seção 4)
+   15. Para Cada Etapa / Turmas (seção 5)
+   16. Condições Especiais (seção 6)
+   17. Unidade — página única de Recife
+   18. Contato e CTA final (seção 8)
+   19. Footer
+   20. Página de Sede (recife.html)
+   21. Media Queries — Responsividade completa
+   ============================================================ */
+
+
+/* ============================================================
+   1. CUSTOM PROPERTIES — variáveis globais reutilizáveis
+   Paleta extraída do brand guide oficial (paleta-cores-oficial.jpg)
+   ============================================================ */
+:root {
+
+  /* === PALETA OFICIAL === */
+  --cor-verde:     #566043;   /* Verde musgo/oliva — cor dominante */
+  --cor-terracota: #8C3211;   /* Vermelho terracota — destaque */
+  --cor-areia:     #B29784;   /* Bege acastanhado — apoio */
+  --cor-creme:     #F2E6DF;   /* Creme claro — fundo principal */
+
+  /* === DERIVADAS FUNCIONAIS === */
+  --cor-lima:      #A8C640;   /* Verde lima — exclusivo para botões CTA */
+  --cor-branco:    #FAF8F5;   /* Off-white — fundo de cards */
+  --cor-preto:     #1A1A1A;   /* Quase preto — footer */
+  --cor-texto:     #2C1A0E;   /* Marrom escuro — corpo de texto */
+  --cor-overlay:   rgba(86, 96, 67, 0.72);  /* Overlay verde sobre o hero */
+
+  /* === TIPOGRAFIA === */
+  --fonte-serif:   'Cormorant Garamond', Georgia, serif;  /* títulos elegantes */
+  --fonte-script:  'Dancing Script', cursive;             /* subtítulos cursivos */
+  --fonte-sans:    'Inter', system-ui, sans-serif;        /* corpo e UI */
+
+  /* === ALIASES DE TIPOGRAFIA (compatibilidade landing + páginas) === */
+  --fonte-titulo:  'Cormorant Garamond', Georgia, serif;  /* = --fonte-serif  */
+  --fonte-cursivo: 'Dancing Script', cursive;             /* = --fonte-script */
+  --fonte-corpo:   'Inter', system-ui, sans-serif;        /* = --fonte-sans   */
+  --fonte-texto:   'Inter', system-ui, sans-serif;        /* = --fonte-sans   */
+
+  /* === ESPAÇAMENTOS === */
+  --section-gap:   6rem;      /* padding vertical de cada section */
+  --container-max: 1200px;    /* largura máxima do conteúdo */
+  --radius-card:   12px;      /* borda arredondada dos cards */
+  --radius-btn:    50px;      /* botões em pill */
+
+  /* === SOMBRAS === */
+  --shadow-card:   0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-hover:  0 12px 40px rgba(0, 0, 0, 0.16);
+  --shadow-btn:    0 4px 15px rgba(168, 198, 64, 0.35);   /* sombra lima nos CTAs */
+
+  /* === TRANSIÇÃO GLOBAL === */
+  --transition:    0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+   Normaliza comportamentos entre navegadores
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;   /* scroll suave ao clicar em âncoras */
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;  /* evita zoom automático no iOS */
+  text-size-adjust: 100%;          /* padrão não-prefixado (Firefox, Chrome) */
+  overflow-x: hidden;              /* bloqueia scroll horizontal (junto com body) */
+}
+
+body {
+  font-family: var(--fonte-sans);
+  color: var(--cor-texto);
+  line-height: 1.7;
+  overflow-x: hidden;           /* sem scroll horizontal */
+  background: var(--cor-branco);
+  -webkit-font-smoothing: antialiased;   /* texto mais nítido no macOS/iOS */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Imagens responsivas por padrão */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Links sem sublinhado; herdam a cor do pai */
+a {
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;  /* remove flash azul no toque mobile */
+}
+
+/* Remove bullet de listas */
+ul, ol {
+  list-style: none;
+}
+
+/* Inputs e botões herdam a fonte do body */
+input, textarea, select, button {
+  font-family: inherit;
+}
+
+
+/* ============================================================
+   3. CONTAINER — centraliza e limita a largura do conteúdo
+   ============================================================ */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 1.5rem;   /* espaço lateral nas telas menores */
+}
+
+/* ── Section Eyebrow — pílula de label acima dos títulos ── */
+/* Ex: "Nossa Base Teórica" acima de h2 das seções */
+.section-eyebrow {
+  display: inline-block;
+  font-family: var(--fonte-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cor-lima);
+  background: rgba(168, 198, 64, 0.12);
+  border: 1px solid rgba(168, 198, 64, 0.25);
+  border-radius: 50px;
+  padding: 0.3rem 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Section Divider — linha decorativa sob o cabeçalho ── */
+.section-divider {
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cor-lima), transparent);
+  border-radius: 2px;
+  margin: 1.5rem auto 0;
+  transition: width 0.6s ease;
+}
+/* Expande a linha quando a seção entra na tela */
+.section-divider.visible {
+  width: 160px;
+}
+
+/* ── Intro da seção Condições ── */
+/* Container de introdução acima das 3 colunas coloridas */
+.condicoes-intro {
+  background: var(--cor-branco);
+  padding: var(--section-gap) 0 3rem;
+  text-align: center;
+}
+.condicoes-intro h2 {
+  color: var(--cor-verde);
+  margin-bottom: 1rem;
+}
+.condicoes-intro p {
+  color: var(--cor-texto);
+  opacity: 0.8;
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+
+/* ============================================================
+   4. TIPOGRAFIA GLOBAL
+   clamp() = escala fluida entre mobile e desktop
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: var(--fonte-serif);
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+/* H1: de 2rem (320px) até 3.5rem (1200px+) */
+h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+
+/* H2: de 1.75rem até 2.75rem */
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+
+/* H3: de 1.25rem até 1.75rem */
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+
+/* Parágrafo padrão */
+p {
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.75;
+}
+
+/* Todas as sections têm padding vertical padrão */
+section {
+  padding: var(--section-gap) 0;
+}
+
+
+/* ============================================================
+   5. BOTÕES — sistema de classes reutilizáveis
+   ============================================================ */
+
+/* Base de todos os botões */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 2rem;
+  border-radius: var(--radius-btn);
+  font-family: var(--fonte-sans);
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition:
+    background-color var(--transition),
+    color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition),
+    filter var(--transition);
+  will-change: transform;                    /* otimiza GPU para animação de hover */
+  white-space: nowrap;
+  touch-action: manipulation;               /* elimina delay de 300ms no toque mobile */
+  -webkit-tap-highlight-color: transparent; /* remove flash azul no iOS/Android */
+  user-select: none;                        /* evita seleção de texto ao tocar */
+  -webkit-user-select: none;
+}
+
+/* Botão primário verde lima — usado em todos os CTAs principais */
+.btn-primary {
+  background: var(--cor-lima);
+  color: var(--cor-texto);
+  box-shadow: var(--shadow-btn);
+}
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  filter: brightness(1.1);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(168, 198, 64, 0.5);
+}
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+/* Botão outline creme — hero sobre imagem escura */
+.btn-outline-white {
+  background: transparent;
+  color: var(--cor-creme, #F2E6DF);
+  border-color: rgba(242, 230, 223, 0.7);
+  backdrop-filter: blur(4px);
+}
+.btn-outline-white:hover,
+.btn-outline-white:focus-visible {
+  background: rgba(242, 230, 223, 0.12);
+  border-color: var(--cor-creme, #F2E6DF);
+  transform: translateY(-3px);
+}
+
+/* Botão outline verde — seções claras */
+.btn-outline-verde {
+  background: transparent;
+  color: var(--cor-verde);
+  border-color: var(--cor-verde);
+}
+.btn-outline-verde:hover,
+.btn-outline-verde:focus-visible {
+  background: var(--cor-verde);
+  color: var(--cor-branco);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Ícone WhatsApp nos botões */
+.btn .fa-whatsapp {
+  font-size: 1.1rem;
+}
+
+
+/* ============================================================
+   6. ANIMAÇÕES E MICRO-TRANSIÇÕES
+   Animações de entrada + reveal ao rolar
+   ============================================================ */
+
+/* Fade de cima para baixo (logo hero) */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade de baixo para cima (textos hero) */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade simples */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* Seta pulsando no hero */
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(10px); }
+}
+
+/* Rotação contínua — loading spinner */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Glow pulsante no botão CTA hero */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(168, 198, 64, 0.5); }
+  50%       { box-shadow: 0 0 20px 8px rgba(168, 198, 64, 0.25); }
+}
+
+/* Shimmer nos cards de abordagem (hover) */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Ondulação do ícone do selo hero */
+@keyframes sealFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33%       { transform: translateY(-6px) rotate(1deg); }
+  66%       { transform: translateY(-3px) rotate(-1deg); }
+}
+
+/* ── Tela de loading de navegação ─────────────────────────── */
+#page-loader {
+  position: fixed;
+  inset: 0;
+  background: var(--cor-terracota);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  /* Fade suave + leve deslize vertical — sem zoom, sem dureza */
+  transition:
+    opacity   1.1s cubic-bezier(0.4, 0, 0.15, 1),
+    transform 1.1s cubic-bezier(0.4, 0, 0.15, 1);
+  transform: translateY(10px);   /* desloca levemente abaixo quando oculto */
+  overflow: hidden;
+}
+
+#page-loader.active  { opacity: 1; pointer-events: all; transform: translateY(0); }
+#page-loader.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+#page-loader.done    { opacity: 0; pointer-events: none; transform: translateY(-10px); }
+
+/* Variante rápida — usada ao clicar em botões.
+   Entrada em 0.3s (suave e visível); saída sobrescrita via JS para 0.35s. */
+#page-loader.loader-quick {
+  transition:
+    opacity   0.3s cubic-bezier(0.4, 0, 0.15, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.15, 1);
+}
+
+/* Container interno centralizado — anima junto com o loader */
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  position: relative;
+  z-index: 1;
+  transition:
+    opacity   0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+/* Conteúdo sobe levemente ao entrar */
+#page-loader:not(.active):not(.visible) .loader-inner {
+  opacity: 0;
+  transform: translateY(12px);
+}
+#page-loader.active .loader-inner,
+#page-loader.visible .loader-inner {
+  opacity: 1;
+  transform: translateY(0);
+}
+#page-loader.done .loader-inner {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* SVG do símbolo — respira suavemente enquanto gira */
+.loader-logo {
+  width: 140px;
+  height: 140px;
+  filter: drop-shadow(0 0 20px rgba(168, 198, 64, 0.3));
+  animation: loaderBreath 3s ease-in-out infinite;
+}
+
+/* Grupo interno — gira lentamente em torno do centro do símbolo.
+   transform-box: fill-box garante que a origem seja o centro da bbox
+   do próprio grupo, independente do viewBox offset (-10 -10 220 220). */
+.loader-spin-group {
+  transform-box: fill-box;
+  transform-origin: center center;
+  animation: loaderSpin 8s linear infinite;
+}
+
+/* ── Loader com IMAGEM REAL (substitui SVG) ──────────────────
+   Quando .loader-logo é um <div> (não SVG), serve de wrapper
+   que herda o loaderBreath; a <img> interna gira sozinha.     */
+div.loader-logo {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* width/height/filter/animation já herdados de .loader-logo */
+}
+
+/* A imagem dentro do loader — gira lentamente */
+.loader-logo-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;   /* logo inteira, sem corte */
+  display: block;
+  animation: loaderSpin 12s linear infinite;
+  transform-origin: center center;
+}
+
+/* Anel externo decorativo — pulsa sem girar */
+.loader-ring-pulse {
+  transform-box: fill-box;
+  transform-origin: center center;
+  animation: loaderRingPulse 3s ease-in-out infinite;
+}
+
+/* Barra de progresso na base */
+.loader-bar {
+  width: 100px;
+  height: 1.5px;
+  background: rgba(242, 230, 223, 0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.loader-bar::after {
+  content: '';
+  position: absolute;
+  left: -50%;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--cor-lima), transparent);
+  border-radius: 2px;
+  animation: loaderBarSlide 1.8s ease-in-out infinite;
+}
+
+/* Texto cursivo */
+.loader-texto {
+  font-family: var(--fonte-script);
+  font-size: 1.75rem;
+  color: var(--cor-creme);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: loaderTextFade 0.8s ease 0.4s forwards;
+}
+
+/* Subtexto */
+.loader-subtexto {
+  font-family: var(--fonte-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: rgba(242, 230, 223, 0.45);
+  margin-top: -1.25rem;
+  opacity: 0;
+  animation: loaderTextFade 0.8s ease 0.6s forwards;
+}
+
+/* === KEYFRAMES === */
+/* Símbolo gira 360° de forma lenta e contínua */
+@keyframes loaderSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+/* SVG inteiro respira — sutil scale + glow */
+@keyframes loaderBreath {
+  0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 20px rgba(168,198,64,0.28)); }
+  50%       { transform: scale(1.04); filter: drop-shadow(0 0 32px rgba(168,198,64,0.55)); }
+}
+/* Anel decorativo pulsa de opacidade */
+@keyframes loaderRingPulse {
+  0%, 100% { opacity: 0.12; r: 90; }
+  50%       { opacity: 0.28; r: 90; }
+}
+/* Shimmer da barra de progresso */
+@keyframes loaderBarSlide {
+  0%   { left: -50%; }
+  100% { left: 110%; }
+}
+/* Fade-in do texto */
+@keyframes loaderTextFade {
+  to { opacity: 1; }
+}
+
+/* ── Reveal on scroll ──────────────────────────────────────── */
+/* Elementos com .reveal ficam invisíveis; JS adiciona .visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(35px);
+  transition:
+    opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Delays escalonados para grupos de elementos */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* Reveal lateral da esquerda */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition:
+    opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Reveal lateral da direita */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition:
+    opacity 0.75s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+
+/* ============================================================
+   7. NAVBAR — barra de navegação fixa no topo
+
+   Estados:
+   - Transparente: quando o visitante está no topo da página
+   - .scrolled: após 80px de scroll → fundo verde sólido
+   ============================================================ */
+#navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;                         /* acima de todo conteúdo */
+  padding: 1.5rem 0;
+  transition:
+    background-color var(--transition),
+    padding var(--transition),
+    box-shadow var(--transition);
+}
+
+/* Estado scrolled: fundo terracota + sombra + padding menor */
+#navbar.scrolled {
+  background: var(--cor-terracota);
+  padding: 0.85rem 0;
+  box-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+}
+
+/* Conteúdo interno: logo | links | CTA */
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* ── Logo ─────────────────────────────────────────────────── */
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+  transition: opacity var(--transition);
+}
+.navbar-logo:hover {
+  opacity: 0.85;
+}
+
+/* Imagem real do logo (substitui SVG simplificado) */
+.logo-mark {
+  border-radius: 50%;
+  object-fit: contain;   /* contain = logo inteira, sem cortes */
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Texto ao lado do ícone SVG */
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+.logo-nome {
+  font-family: var(--fonte-script);
+  font-size: 1.45rem;
+  color: var(--cor-creme);  /* sempre claro — navbar sempre tem fundo escuro ou transparente sobre hero escuro */
+  transition: color var(--transition);
+}
+.logo-subtitulo {
+  font-family: var(--fonte-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(242, 230, 223, 0.75);
+  transition: color var(--transition);
+}
+
+/* ── Links de navegação ───────────────────────────────────── */
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(242, 230, 223, 0.9);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  letter-spacing: 0.03em;
+  position: relative;
+  transition: color var(--transition), background-color var(--transition);
+}
+
+/* Linha decorativa que cresce sob o link ativo */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: var(--cor-lima);
+  border-radius: 2px;
+  transition: width var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: var(--cor-creme);
+  background: rgba(255, 255, 255, 0.08);
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: calc(100% - 1.5rem);
+}
+
+/* Botão CTA na navbar */
+.navbar-cta {
+  font-size: 0.8rem;
+  padding: 0.6rem 1.25rem;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* ── Hambúrguer (só mobile) ───────────────────────────────── */
+.hamburger {
+  display: none;          /* oculto no desktop */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background-color var(--transition);
+}
+.hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* As 3 barras do hambúrguer */
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--cor-creme);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+  transform-origin: center;
+}
+
+/* Quando o menu está aberto, as barras ficam levemente translúcidas.
+   O botão X está DENTRO do drawer (#drawer-close) — não há dois X's na tela. */
+.hamburger.open span { opacity: 0.45; }
+
+
+/* ============================================================
+   8. MENU MOBILE — drawer lateral
+   ============================================================ */
+
+/* Overlay escuro atrás do drawer */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 999;   /* abaixo da navbar (1000) — mantém o hambúrguer sempre clicável.
+                     No mobile a navbar só exibe logo + hambúrguer, então não cobrir
+                     a navbar é intencional e não expõe links de desktop. */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+  backdrop-filter: blur(3px);
+}
+.menu-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Drawer — desliza da direita */
+.menu-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: min(80vw, 320px);   /* 80% da largura, máximo 320px */
+  height: 100dvh;            /* altura dinâmica — cobre a URL bar no mobile */
+  background: var(--cor-terracota);
+  z-index: 1002;  /* acima do overlay (1001) e da navbar (1000) */
+  transform: translateX(100%);   /* começa fora da tela */
+
+  /* visibility: hidden quando fechado — corrige bug do iOS Safari onde
+     overflow:hidden no body/html não impede scroll em position:fixed.
+     A transição delay garante que o drawer desaparece SÓ APÓS o slide-out. */
+  visibility: hidden;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.4s;   /* esconde APÓS a transição terminar */
+
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 1.5rem;
+  overflow-y: auto;
+}
+.menu-drawer.open {
+  transform: translateX(0);   /* desliza para dentro */
+  visibility: visible;        /* mostra IMEDIATAMENTE ao abrir */
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0s;  /* sem delay ao abrir */
+}
+
+/* Cabeçalho do drawer com logo e botão fechar */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(242, 230, 223, 0.2);
+}
+
+/* Botão X para fechar o drawer */
+.drawer-close {
+  background: transparent;
+  border: none;
+  color: var(--cor-creme);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: background-color var(--transition), transform var(--transition);
+}
+.drawer-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+}
+
+/* Links dentro do drawer — em coluna */
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.drawer-link {
+  color: rgba(242, 230, 223, 0.9);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  border-left: 3px solid transparent;
+  transition:
+    color var(--transition),
+    background-color var(--transition),
+    border-color var(--transition),
+    transform var(--transition);
+}
+.drawer-link:hover {
+  color: var(--cor-creme);
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: var(--cor-lima);
+  transform: translateX(4px);
+}
+
+/* CTA dentro do drawer */
+.drawer-cta {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+
+/* ============================================================
+   9. BOTÃO BACK-TO-TOP
+   Aparece após 400px de scroll
+   ============================================================ */
+#back-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--cor-terracota);
+  color: var(--cor-creme);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 990;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition:
+    opacity var(--transition),
+    transform var(--transition),
+    background-color var(--transition);
+  box-shadow: 0 4px 16px rgba(86, 96, 67, 0.4);
+}
+#back-to-top.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+#back-to-top:hover {
+  background: var(--cor-terracota);
+  transform: translateY(-4px);
+}
+
+
+/* ============================================================
+   10. HERO — seção 1
+   Fullscreen com foto de fundo, overlay e conteúdo centralizado
+   ============================================================ */
+.hero {
+  position: relative;
+  height: 100dvh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Imagem de fundo com efeito parallax suave via JS */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('../../imagens/img-fachada-recife.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform;
+  transform: scale(1.05);   /* margem para o efeito parallax */
+  transition: transform 0.1s linear;
+}
+
+/* Overlay colorido sobre a foto */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  /* terracota sólido cobrindo toda a foto */
+  background: rgba(140, 50, 17, 0.92);
+}
+
+/* Conteúdo do hero — centralizado em coluna */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 820px;
+  padding: 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+/* Selo SVG no hero */
+.hero-seal {
+  width: 120px;
+  height: 120px;
+  animation:
+    fadeInDown 0.9s ease both,
+    sealFloat 6s ease-in-out 1s infinite;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+}
+
+/* Título principal */
+.hero-title {
+  font-family: var(--fonte-serif);
+  font-size: clamp(1.9rem, 5vw, 3.4rem);
+  color: var(--cor-creme);
+  font-weight: 600;
+  line-height: 1.2;
+  animation: fadeInUp 0.9s ease 0.2s both;
+  /* destacar as palavras-chave em negrito itálico */
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--cor-creme);
+}
+
+/* Subtítulo cursivo */
+.hero-subtitle {
+  font-family: var(--fonte-script);
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: rgba(242, 230, 223, 0.82);
+  animation: fadeInUp 0.9s ease 0.4s both;
+  letter-spacing: 0.02em;
+}
+
+/* Grupo de botões */
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeInUp 0.9s ease 0.6s both;
+}
+
+/* Seta de scroll animada */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(242, 230, 223, 0.7);
+  font-size: 1.4rem;
+  animation: bounce 2.2s ease-in-out infinite;
+  z-index: 2;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.scroll-indicator:hover {
+  color: var(--cor-lima);
+}
+
+
+/* ============================================================
+   11. SOBRE — seção 2
+   ============================================================ */
+#sobre {
+  background: var(--cor-creme);
+  padding-bottom: 0;   /* pilares-bloco já tem seu próprio padding — evita faixa creme extra */
+}
+
+/* Grid 2 colunas: texto (60%) | cards (40%) */
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Badge "A NOVA ESCOLA" */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cor-verde);
+  background: rgba(86, 96, 67, 0.1);
+  border: 1px solid rgba(86, 96, 67, 0.2);
+  padding: 0.35rem 0.9rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+/* Título da seção */
+.sobre-titulo {
+  color: var(--cor-terracota);
+  margin-bottom: 1.25rem;
+}
+
+/* Texto descritivo */
+.sobre-texto {
+  color: var(--cor-texto);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+/* Cards de diferenciais empilhados */
+.sobre-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Card individual com borda esquerda colorida */
+.diferencial-card {
+  background: var(--cor-branco);
+  border-radius: var(--radius-card);
+  border-left: 4px solid var(--cor-verde);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.diferencial-card:hover {
+  transform: translateX(6px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Ícone do card */
+.diferencial-icon {
+  font-size: 1.4rem;
+  color: var(--cor-terracota);
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+/* Título do diferencial */
+.diferencial-card h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--cor-verde);
+  margin-bottom: 0.35rem;
+  font-family: var(--fonte-sans);
+}
+
+/* Descrição do diferencial */
+.diferencial-card p {
+  font-size: 0.9rem;
+  color: var(--cor-texto);
+  opacity: 0.85;
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   12. PILARES — bloco inferior da seção Sobre (fundo verde)
+   ============================================================ */
+.pilares-bloco {
+  background: var(--cor-verde);
+  padding: var(--section-gap) 0;
+  margin-top: var(--section-gap);
+}
+
+/* Título dos pilares */
+.pilares-titulo {
+  color: var(--cor-creme);
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 3rem;
+}
+
+/* Foto da equipe */
+.pilares-foto {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto 3rem;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.pilares-foto img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.pilares-foto:hover img {
+  transform: scale(1.03);
+}
+
+/* Grid 3 colunas dos pilares */
+.pilares-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* Card de pilar */
+.pilar-card {
+  background: rgba(255, 255, 255, 0.07);   /* vidro translúcido sobre o verde */
+  border: 1px solid rgba(242, 230, 223, 0.18);
+  border-radius: var(--radius-card);
+  padding: 2rem;
+  text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition), background-color var(--transition);
+}
+.pilar-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.13);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+}
+
+/* Ícone do pilar — dentro de um círculo creme para destacar */
+.pilar-icon {
+  font-size: 1.6rem;
+  color: var(--cor-terracota);
+  margin: 0 auto 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  background: rgba(242, 230, 223, 0.15);   /* círculo translúcido creme */
+  border: 1.5px solid rgba(242, 230, 223, 0.25);
+  border-radius: 50%;
+  transition: transform var(--transition), background-color var(--transition), color var(--transition);
+}
+.pilar-card:hover .pilar-icon {
+  transform: scale(1.12) rotate(-5deg);
+  background: rgba(242, 230, 223, 0.25);
+  color: var(--cor-lima);   /* lima no hover para contraste máximo */
+}
+
+/* Título do pilar */
+.pilar-card h3 {
+  font-family: var(--fonte-serif);
+  color: var(--cor-creme);   /* branco suave sobre o fundo verde */
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Texto do pilar */
+.pilar-card p {
+  font-size: 0.9rem;
+  color: rgba(242, 230, 223, 0.78);   /* creme com leve transparência */
+  line-height: 1.7;
+}
+
+/* CTA dos pilares centralizado */
+.pilares-cta {
+  text-align: center;
+}
+
+
+/* ============================================================
+   13. ABORDAGENS — seção 3 (fundo terracota)
+   ============================================================ */
+#abordagens {
+  background: var(--cor-terracota);
+}
+
+/* Cabeçalho da seção */
+.abordagens-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+.abordagens-header h2 {
+  color: var(--cor-creme);
+  margin-bottom: 0.75rem;
+}
+.abordagens-header p {
+  color: rgba(242, 230, 223, 0.85);
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Eyebrow da seção Abordagens — versão creme sobre fundo terracota */
+.abordagens-header .section-eyebrow {
+  color: var(--cor-creme);
+  background: rgba(242, 230, 223, 0.12);
+  border-color: rgba(242, 230, 223, 0.3);
+}
+
+/* Divider da seção Abordagens — linha creme */
+.abordagens-header .section-divider {
+  background: linear-gradient(90deg, transparent, rgba(242,230,223,0.6), transparent);
+}
+
+/* Seção "Abordagens" removida do site — CSS removido junto */
+
+
+/* ============================================================
+   14. GRADE CURRICULAR / ACORDEÕES — seção 4 (fundo verde)
+   ============================================================ */
+/* Seção de módulos — fundo off-white para combinar com o estilo do site */
+#modulos {
+  background: var(--cor-branco);
+}
+
+/* Cabeçalho da seção de módulos */
+.modulos-header {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+/* Coluna de texto do header */
+.modulos-header-texto {
+  flex: 1;
+}
+.modulos-header h2 {
+  color: var(--cor-texto);
+  margin-bottom: 0.75rem;
+}
+.modulos-header p {
+  color: rgba(44, 26, 14, 0.6);
+}
+/* Foto do livro ao lado do título */
+.modulos-header-img {
+  flex: 0 0 220px;
+  margin: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+}
+.modulos-header-img img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+/* Mobile: volta ao empilhado */
+@media (max-width: 640px) {
+  .modulos-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  .modulos-header-img {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 320px;
+  }
+  .modulos-header-img img {
+    height: 200px;
+  }
+}
+
+/* Wrapper dos acordeões */
+.acordeoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+/* Acordeão individual */
+.acordeao {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(242, 230, 223, 0.15);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  transition: background-color var(--transition);
+}
+.acordeao.aberto {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Cabeçalho clicável do acordeão */
+.acordeao-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--transition);
+}
+.acordeao-header:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Badge numerado do módulo */
+.modulo-badge {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--cor-verde), var(--cor-terracota));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.modulo-badge span {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* Título do módulo */
+.acordeao-titulo {
+  flex: 1;
+  font-family: var(--fonte-serif);
+  color: var(--cor-creme);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* Ícone +/- */
+.acordeao-icon {
+  color: var(--cor-lima);
+  font-size: 1.2rem;
+  transition: transform var(--transition);
+  flex-shrink: 0;
+}
+.acordeao.aberto .acordeao-icon {
+  transform: rotate(45deg);   /* + vira ×  */
+}
+
+/* Painel expansível — animado por max-height */
+.acordeao-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Conteúdo interno do painel */
+.acordeao-content {
+  background: var(--cor-branco);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Item de disciplina dentro do painel */
+.disciplina {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 0.85rem;
+  align-items: start;
+}
+
+/* Seta decorativa antes de cada disciplina */
+.disciplina::before {
+  content: '→';
+  color: var(--cor-lima);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: 0.1rem;
+}
+
+/* Nome da disciplina */
+.disciplina-nome {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cor-terracota);
+  margin-bottom: 0.3rem;
+}
+
+/* Descrição da disciplina */
+.disciplina-desc {
+  font-size: 0.88rem;
+  color: var(--cor-texto);
+  line-height: 1.65;
+}
+
+/* CTA abaixo dos módulos */
+.modulos-cta {
+  text-align: center;
+}
+
+
+/* ============================================================
+   15. PARA CADA ETAPA / TURMAS — seção 5 (fundo branco)
+   ============================================================ */
+#turmas {
+  background: var(--cor-branco);
+}
+
+/* Cabeçalho */
+.turmas-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.turmas-header h2 {
+  color: var(--cor-verde);
+  margin-bottom: 0.75rem;
+}
+.turmas-header p {
+  color: var(--cor-texto);
+  opacity: 0.8;
+}
+
+/* Grid 3 cards */
+.turmas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* Card de turma */
+.turma-card {
+  background: var(--cor-creme);
+  border-radius: var(--radius-card);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition), box-shadow var(--transition);
+  border-bottom: 4px solid transparent;
+}
+.turma-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-hover);
+  border-bottom-color: var(--cor-lima);
+}
+
+/* Ícone da turma */
+.turma-icon {
+  font-size: 2.5rem;
+  color: var(--cor-verde);
+  margin-bottom: 1.25rem;
+  display: block;
+  transition: transform var(--transition), color var(--transition);
+}
+.turma-card:hover .turma-icon {
+  transform: scale(1.2);
+  color: var(--cor-terracota);
+}
+
+/* Nome da turma */
+.turma-card h3 {
+  font-family: var(--fonte-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cor-verde);
+  margin-bottom: 0.75rem;
+}
+
+/* Descrição da turma */
+.turma-card p {
+  font-size: 0.9rem;
+  color: var(--cor-texto);
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+/* CTA centralizado */
+.turmas-cta {
+  text-align: center;
+}
+
+
+/* ============================================================
+   16. CONDIÇÕES ESPECIAIS — seção 6
+   3 colunas desktop, horizontal scroll no mobile
+   ============================================================ */
+#condicoes {
+  padding: 0;   /* sem padding — as colunas ocupam tudo */
+  overflow: hidden;
+}
+
+/* Linha de condições — 3 colunas lado a lado */
+.condicoes-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Coluna de condição */
+.condicao-col {
+  padding: calc(var(--section-gap) * 1.2) 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Cores de fundo por coluna */
+.condicao-col--iniciantes  {
+  background: var(--cor-creme);
+  /* Borda esquerda verde ancora visualmente a coluna clara */
+  border-left: 4px solid var(--cor-verde);
+}
+.condicao-col--avancados   { background: var(--cor-verde); }
+.condicao-col--formados    { background: var(--cor-areia); }
+
+/* Card da coluna creme: mais contraste para não parecer flutuando */
+.condicao-col--iniciantes .condicao-card {
+  background: var(--cor-branco);
+  border: 1px solid rgba(86, 96, 67, 0.14);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05), 0 6px 22px rgba(86, 96, 67, 0.1);
+}
+
+/* Badge de tipo de aluno */
+.condicao-badge {
+  font-family: var(--fonte-serif);
+  font-style: italic;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.condicao-col--iniciantes .condicao-badge { color: var(--cor-terracota); }
+.condicao-col--avancados  .condicao-badge { color: var(--cor-lima); }
+.condicao-col--formados   .condicao-badge { color: var(--cor-terracota); }
+
+/* Título da condição */
+.condicao-col h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  line-height: 1.2;
+}
+.condicao-col--iniciantes h2 { color: var(--cor-verde); }
+.condicao-col--avancados  h2 { color: var(--cor-creme); }
+.condicao-col--formados   h2 { color: var(--cor-verde); }
+
+/* Texto introdutório */
+.condicao-texto {
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+.condicao-col--iniciantes .condicao-texto { color: var(--cor-texto); }
+.condicao-col--avancados  .condicao-texto { color: rgba(242, 230, 223, 0.85); }
+.condicao-col--formados   .condicao-texto { color: var(--cor-texto); }
+
+/* Card branco com lista de benefícios */
+.condicao-card {
+  background: var(--cor-branco);
+  border-radius: var(--radius-card);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-card);
+  /* flex: 1 removido — impedia o card de ter altura natural */
+}
+
+/* Botão CTA dentro das colunas de condição — cola no fundo */
+.condicao-col .btn {
+  margin-top: auto;
+}
+
+/* Lista de benefícios */
+.beneficios-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+/* Item da lista */
+.beneficio-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--cor-texto);
+}
+
+/* Ícone de check verde lima */
+.beneficio-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cor-lima);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  box-shadow: 0 2px 8px rgba(168, 198, 64, 0.4);
+}
+
+/* Preço riscado */
+.preco-riscado {
+  text-decoration: line-through;
+  opacity: 0.55;
+  font-size: 0.85em;
+}
+
+/* Preço destacado */
+.preco-destaque {
+  font-weight: 700;
+  color: var(--cor-terracota);
+}
+
+/* Linha de tempo limitado */
+.tempo-limitado {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--cor-terracota);
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(86, 96, 67, 0.1);
+}
+.condicao-col--avancados .tempo-limitado {
+  color: var(--cor-terracota);
+}
+
+
+/* ============================================================
+   17. SEÇÃO DE UNIDADE — exibe apenas Recife (index.html)
+   ============================================================ */
+#unidades {
+  background: var(--cor-creme);
+}
+
+/* Cabeçalho */
+.unidades-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+.unidades-header h2 {
+  color: var(--cor-terracota);
+  margin-bottom: 0.5rem;
+}
+.unidades-header p {
+  color: var(--cor-texto);
+  opacity: 0.75;
+}
+
+/* Card da unidade Recife — centralizado e destacado */
+.unidade-card-destaque {
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--cor-branco);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-hover);
+  transition: transform var(--transition);
+}
+.unidade-card-destaque:hover {
+  transform: translateY(-6px);
+}
+
+/* Foto da sede */
+.unidade-foto {
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+.unidade-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 18%;  /* foco no terço superior — exibe o banner da fachada */
+  transition: transform 0.5s ease;
+}
+.unidade-card-destaque:hover .unidade-foto img {
+  transform: scale(1.05);
+}
+
+/* Badge SEDE sobre a foto */
+.unidade-badge-sede {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--cor-lima);
+  color: var(--cor-texto);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+/* Conteúdo textual do card */
+.unidade-body {
+  padding: 2rem;
+}
+
+.unidade-body h3 {
+  font-family: var(--fonte-serif);
+  color: var(--cor-verde);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.unidade-body p {
+  color: var(--cor-texto);
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.7;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+/* Linha de localização */
+.unidade-local {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--cor-areia);
+  margin-bottom: 1.5rem;
+}
+.unidade-local i {
+  color: var(--cor-terracota);
+}
+
+
+/* ============================================================
+   18. CONTATO — seção 8 (fundo verde)
+   ============================================================ */
+#contato {
+  background: var(--cor-verde);
+}
+
+/* Grid 2 colunas: texto | formulário */
+.contato-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Coluna esquerda */
+.contato-info h2 {
+  color: var(--cor-creme);
+  margin-bottom: 1rem;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.contato-info > p {
+  color: rgba(242, 230, 223, 0.85);
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+/* Botão CTA grande */
+.contato-cta-btn {
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  margin-bottom: 2.5rem;
+  height: 58px;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Lista de informações de contato */
+.contato-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contato-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  color: rgba(242, 230, 223, 0.9);
+  font-size: 0.92rem;
+}
+.contato-item i {
+  color: var(--cor-lima);
+  font-size: 1rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+/* Formulário de contato */
+.contato-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Campos do formulário */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-field label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(242, 230, 223, 0.7);
+}
+
+/* Input, select e textarea */
+.form-field input,
+.form-field select,
+.form-field textarea {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(242, 230, 223, 0.25);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  color: var(--cor-creme);
+  font-size: 0.95rem;
+  transition:
+    border-color var(--transition),
+    background-color var(--transition),
+    box-shadow var(--transition);
+  -webkit-appearance: none;   /* remove estilo nativo no iOS */
+  appearance: none;
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: rgba(242, 230, 223, 0.45);
+}
+
+/* Select: adicionar seta customizada */
+.form-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23F2E6DF' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* Options dentro do select (cor do sistema — não é possível personalizar) */
+.form-field select option {
+  background: var(--cor-verde);
+  color: var(--cor-creme);
+}
+
+/* Foco: borda lima + sombra suave */
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--cor-lima);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(168, 198, 64, 0.2);
+}
+
+/* Textarea não redimensionável horizontalmente */
+.form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Grid de dois campos lado a lado */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Botão de submit */
+.form-submit-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Spinner de loading no botão */
+.form-submit-btn .spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(44, 26, 14, 0.3);
+  border-top-color: var(--cor-texto);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.form-submit-btn.loading .btn-text { display: none; }
+.form-submit-btn.loading .spinner  { display: block; }
+
+/* Mensagem de sucesso após envio */
+.form-success {
+  display: none;
+  background: rgba(168, 198, 64, 0.15);
+  border: 1.5px solid var(--cor-lima);
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+  color: var(--cor-creme);
+  font-size: 0.95rem;
+}
+.form-success.visible {
+  display: block;
+  animation: fadeIn 0.4s ease;
+}
+.form-success i {
+  font-size: 1.5rem;
+  color: var(--cor-lima);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+
+/* ============================================================
+   19. FOOTER
+   ============================================================ */
+footer {
+  background: var(--cor-preto);
+  padding: 4rem 0 0;
+  color: rgba(242, 230, 223, 0.65);
+}
+
+/* Grid 4 colunas desktop */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Tagline no footer */
+.footer-tagline {
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--cor-areia);
+  margin-top: 0.75rem;
+  line-height: 1.6;
+}
+
+/* Títulos das colunas do footer */
+.footer-col h4 {
+  font-family: var(--fonte-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cor-areia);
+  margin-bottom: 1.25rem;
+}
+
+/* Links do footer */
+.footer-col a {
+  display: block;
+  font-size: 0.88rem;
+  color: rgba(242, 230, 223, 0.6);
+  padding: 0.3rem 0;
+  transition: color var(--transition), transform var(--transition);
+  border-left: 2px solid transparent;
+  padding-left: 0;
+}
+.footer-col a:hover {
+  color: var(--cor-creme);
+  border-left-color: var(--cor-lima);
+  padding-left: 0.5rem;
+}
+
+/* Informações de contato no footer */
+.footer-contato-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.88rem;
+  color: rgba(242, 230, 223, 0.65);
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+.footer-contato-item i {
+  color: var(--cor-lima);
+  margin-top: 0.1rem;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+
+/* Redes sociais */
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.footer-social a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--cor-areia) !important;
+  font-size: 0.9rem;
+  transition:
+    background-color var(--transition),
+    color var(--transition),
+    transform var(--transition),
+    border-color var(--transition) !important;
+  padding-left: 0 !important;
+  border-left: 1px solid rgba(255,255,255,0.1) !important;
+}
+.footer-social a:hover {
+  background: var(--cor-lima);
+  color: var(--cor-texto) !important;
+  border-color: var(--cor-lima) !important;
+  transform: translateY(-4px) !important;
+}
+
+/* Linha inferior do footer */
+.footer-bottom {
+  padding: 1.25rem 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(242, 230, 223, 0.35);
+}
+.footer-bottom a {
+  color: rgba(242, 230, 223, 0.5);
+  transition: color var(--transition);
+}
+.footer-bottom a:hover {
+  color: var(--cor-creme);
+}
+
+
+/* ============================================================
+   20. PÁGINA DE SEDE — recife.html
+   Estilos específicos para a página interna da unidade
+   ============================================================ */
+
+/* Hero da sede — menor que o hero principal */
+.sede-hero {
+  position: relative;
+  height: 55vh;
+  min-height: 380px;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+/* Fundo foto */
+.sede-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 18%;  /* foco no terço superior — exibe o banner da fachada */
+  background-repeat: no-repeat;
+  transform: scale(1.05);
+}
+
+/* Overlay */
+.sede-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(26,26,26,0.3) 0%,
+    rgba(86,96,67,0.8) 100%
+  );
+}
+
+/* Conteúdo do hero da sede */
+.sede-hero-content {
+  position: relative;
+  z-index: 2;
+  padding-bottom: 3rem;
+  width: 100%;
+}
+
+/* Breadcrumb de navegação */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.82rem;
+  color: rgba(242, 230, 223, 0.7);
+  margin-bottom: 1rem;
+}
+.breadcrumb a {
+  color: var(--cor-lima);
+  transition: opacity var(--transition);
+}
+.breadcrumb a:hover {
+  opacity: 0.8;
+}
+.breadcrumb span {
+  color: rgba(242, 230, 223, 0.5);
+}
+
+/* Título da sede */
+.sede-hero-content h1 {
+  font-family: var(--fonte-script);
+  color: var(--cor-creme);
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  margin-bottom: 0.5rem;
+}
+.sede-hero-content h2 {
+  font-family: var(--fonte-serif);
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  color: rgba(242, 230, 223, 0.75);
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Seção "Sobre a sede" */
+.sede-sobre {
+  background: var(--cor-creme);
+  padding: var(--section-gap) 0;
+}
+
+/* Grid: texto | fotos */
+.sede-sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Grid de fotos 2x2 */
+.sede-fotos-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+/* Galeria de fotos */
+.sede-galeria {
+  background: var(--cor-branco);
+  padding: var(--section-gap) 0;
+}
+.sede-galeria h2 {
+  color: var(--cor-verde);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Grid 4 colunas da galeria */
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+.galeria-item {
+  border-radius: 8px;
+  overflow: hidden;
+  height: 220px;
+  background: var(--cor-areia);
+  position: relative;
+}
+.galeria-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.galeria-item:hover img {
+  transform: scale(1.08);
+}
+
+/* Placeholder de galeria */
+.galeria-placeholder {
+  height: 220px;
+  background: var(--cor-areia);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: var(--cor-verde);
+  border-radius: 8px;
+  border: 2px dashed rgba(86, 96, 67, 0.4);
+  font-size: 0.8rem;
+  font-style: italic;
+  text-align: center;
+  padding: 0.75rem;
+  transition: background-color var(--transition);
+}
+.galeria-placeholder::before {
+  content: '📸';
+  font-size: 1.5rem;
+}
+.galeria-placeholder:hover {
+  background: rgba(178, 151, 132, 0.5);
+}
+
+/* Seção de mapa */
+.sede-mapa {
+  background: var(--cor-creme);
+  padding: var(--section-gap) 0;
+}
+.sede-mapa h2 {
+  color: var(--cor-terracota);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Grid: mapa | info */
+.mapa-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Placeholder do mapa do Google */
+.mapa-placeholder {
+  height: 350px;
+  background: var(--cor-areia);
+  border-radius: var(--radius-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--cor-verde);
+  border: 2px dashed var(--cor-verde);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 1rem;
+}
+.mapa-placeholder i {
+  font-size: 2.5rem;
+  color: var(--cor-terracota);
+}
+
+/* iframe do Google Maps */
+.mapa-iframe {
+  width: 100%;
+  height: 350px;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  border: none;
+}
+
+/* Informações da unidade */
+.unidade-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.unidade-info h3 {
+  font-family: var(--fonte-serif);
+  color: var(--cor-verde);
+  margin-bottom: 0.5rem;
+}
+
+/* Item de info (endereço, tel, etc.) */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  font-size: 0.92rem;
+  color: var(--cor-texto);
+  line-height: 1.6;
+}
+.info-item i {
+  color: var(--cor-terracota);
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+  width: 18px;
+}
+
+/* CTA da página de sede */
+.sede-cta {
+  background: var(--cor-verde);
+  padding: 5rem 0;
+  text-align: center;
+}
+.sede-cta h2 {
+  color: var(--cor-creme);
+  margin-bottom: 1rem;
+}
+.sede-cta p {
+  color: rgba(242, 230, 223, 0.8);
+  margin-bottom: 2rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ============================================================
+   21. MURAL DE PROFESSORES — cards interativos no bloco Pilares
+   Grid com overlay revelado no hover (desktop) ou toque (mobile)
+   ============================================================ */
+
+/* Wrapper do mural — substitui a foto estática da equipe */
+.mural-professores {
+  margin-bottom: 3rem;
+}
+
+/* Título acima do grid */
+.mural-titulo {
+  font-family: var(--fonte-serif);
+  color: var(--cor-creme);
+  text-align: center;
+  font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+}
+
+/* Instrução de uso */
+.mural-subtitulo {
+  color: rgba(242, 230, 223, 0.55);
+  text-align: center;
+  font-size: 0.82rem;
+  font-style: italic;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+/* Grid — 5 colunas no desktop */
+.mural-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+/* Card individual */
+.prof-card {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  background: rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  border: 1px solid rgba(242, 230, 223, 0.1);
+  transition:
+    box-shadow  0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    transform   0.55s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.55s ease;
+  will-change: transform;
+  outline: none;
+}
+
+/* Lift + anel lima + sombra profunda no hover */
+.prof-card:hover,
+.prof-card.expanded {
+  transform: translateY(-7px);
+  border-color: rgba(168, 198, 64, 0.55);
+  box-shadow:
+    0 0 0 2px rgba(168, 198, 64, 0.38),
+    0 28px 55px rgba(0, 0, 0, 0.45),
+    0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* Anel de foco acessível */
+.prof-card:focus-visible {
+  box-shadow: 0 0 0 3px var(--cor-lima);
+}
+
+/* ── Foto de fundo ────────────────────────────────────────── */
+.prof-foto-wrap {
+  position: absolute;
+  inset: 0;
+}
+.prof-foto-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  transition:
+    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    filter    0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, filter;
+}
+
+/* Foto: zoom suave + escurece sem blur — resultado mais limpo */
+.prof-card:hover .prof-foto-wrap img,
+.prof-card.expanded .prof-foto-wrap img {
+  transform: scale(1.06);
+  filter: brightness(0.18) saturate(0.6);
+}
+
+/* ── Placeholder quando não há foto real ─────────────────── */
+.prof-foto-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    145deg,
+    rgba(86, 96, 67, 0.75),
+    rgba(44, 26, 14, 0.65)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  color: rgba(242, 230, 223, 0.12);
+  transition: filter 0.55s ease;
+}
+.prof-card:hover .prof-foto-placeholder,
+.prof-card.expanded .prof-foto-placeholder {
+  filter: brightness(0.35);
+}
+
+/* ── Info base — nome e especialidade (sempre visível) ───── */
+.prof-base {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem 0.9rem 0.85rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 100%);
+  z-index: 2;
+  transition:
+    opacity   0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.prof-card:hover .prof-base,
+.prof-card.expanded .prof-base {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.prof-nome {
+  font-family: var(--fonte-serif);
+  font-size: 0.9rem;
+  color: var(--cor-creme);
+  margin-bottom: 0.2rem;
+  line-height: 1.3;
+  font-weight: 600;
+}
+
+.prof-especialidade {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--cor-lima);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+
+/* ── Overlay — revelado no hover/tap ─────────────────────── */
+.prof-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    155deg,
+    rgba(86, 96, 67, 0.97) 0%,
+    rgba(44, 26, 14, 0.95) 100%
+  );
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.1rem;
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity   0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+.prof-card:hover .prof-overlay,
+.prof-card.expanded .prof-overlay {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* Linha lima: anima de largura 0 → 32px (stagger delay) */
+.prof-overlay::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: var(--cor-lima);
+  border-radius: 2px;
+  margin-bottom: 0.75rem;
+  flex-shrink: 0;
+  transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1) 0.18s;
+}
+.prof-card:hover .prof-overlay::before,
+.prof-card.expanded .prof-overlay::before {
+  width: 32px;
+}
+
+/* Nome — stagger translateY */
+.prof-overlay-nome {
+  font-family: var(--fonte-serif);
+  font-size: 0.95rem;
+  color: var(--cor-creme);
+  margin-bottom: 0.15rem;
+  line-height: 1.3;
+  transform: translateY(12px);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.12s;
+}
+.prof-card:hover .prof-overlay-nome,
+.prof-card.expanded .prof-overlay-nome {
+  transform: translateY(0);
+}
+
+/* Especialidade — stagger */
+.prof-overlay-espec {
+  font-size: 0.6rem;
+  color: var(--cor-lima);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  display: block;
+  transform: translateY(12px);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.18s;
+}
+.prof-card:hover .prof-overlay-espec,
+.prof-card.expanded .prof-overlay-espec {
+  transform: translateY(0);
+}
+
+/* Bio — stagger (truncada em 4 linhas) */
+.prof-bio {
+  font-size: 0.76rem;
+  color: rgba(242, 230, 223, 0.88);
+  line-height: 1.6;
+  margin-bottom: 0.85rem;
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;              /* padrão — exigido pelo linter */
+  -webkit-box-orient: vertical;
+  transform: translateY(12px);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.23s;
+}
+.prof-card:hover .prof-bio,
+.prof-card.expanded .prof-bio {
+  transform: translateY(0);
+}
+
+/* Área dos botões — stagger final */
+.prof-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex-shrink: 0;
+  transform: translateY(12px);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.28s;
+}
+.prof-card:hover .prof-actions,
+.prof-card.expanded .prof-actions {
+  transform: translateY(0);
+}
+
+/* Botão pequeno — variante dos cards */
+.btn-sm {
+  padding: 0.5rem 0.85rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+/* Botão PDF dentro do overlay */
+.prof-actions .btn-pdf {
+  background: transparent;
+  color: var(--cor-creme);
+  border: 1.5px solid rgba(242, 230, 223, 0.45);
+  border-radius: var(--radius-btn);
+  padding: 0.48rem 0.85rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition:
+    background-color var(--transition),
+    border-color var(--transition),
+    transform var(--transition);
+}
+.prof-actions .btn-pdf:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--cor-creme);
+  transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   22. MEDIA QUERIES — RESPONSIVIDADE COMPLETA
+
+   Breakpoints:
+   - xs:     < 480px   (smartphones pequenos)
+   - sm:     480–767px (smartphones normais)
+   - md:     768–1023px (tablets)
+   - lg:     1024–1199px (laptops)
+   - xl:     ≥ 1200px  (desktops)
+   ============================================================ */
+
+/* ── Tablet (≤ 1024px) ─────────────────────────────────────── */
+@media (max-width: 1024px) {
+
+  /* Footer: 2 colunas no tablet */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  /* Grade curricular: pilares 2 colunas */
+  .pilares-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Condições: tablet — scroll horizontal */
+  .condicoes-row {
+    grid-template-columns: 1fr;
+  }
+  .condicao-col {
+    padding: 3rem 2rem;
+  }
+
+  /* Mural de professores: 4 colunas no tablet */
+  .mural-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Galeria: 3 colunas */
+  .galeria-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  /* Mapa: coluna única */
+  .mapa-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contato: coluna única */
+  .contato-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+/* ── Mobile (≤ 768px) ─────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Variáveis reduzidas para mobile */
+  :root {
+    --section-gap: 4rem;
+  }
+
+  /* ── Loader mobile ── */
+  .loader-logo  { width: 110px; height: 110px; }
+  .loader-texto { font-size: 1.5rem; }
+  .loader-bar   { width: 80px; }
+
+  /* ── Navbar mobile ── */
+  .navbar-nav,
+  .navbar-cta {
+    display: none;   /* oculta links e CTA desktop */
+  }
+  .hamburger {
+    display: flex;   /* mostra hambúrguer */
+  }
+
+  /* ── Hero mobile ── */
+  .hero-seal {
+    width: 90px;
+    height: 90px;
+  }
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 320px;
+  }
+  .hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── Sobre mobile ── */
+  .sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  /* ── Pilares mobile ── */
+  .pilares-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Mural de professores mobile: 3 colunas ── */
+  .mural-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .mural-titulo { font-size: 1.15rem; }
+  .mural-subtitulo { margin-bottom: 1.25rem; font-size: 0.78rem; }
+  .prof-nome { font-size: 0.8rem; }
+  .prof-especialidade { font-size: 0.58rem; }
+  .prof-bio { font-size: 0.7rem; -webkit-line-clamp: 3; line-clamp: 3; }
+  .prof-overlay::before { margin-bottom: 0.5rem; }
+  .prof-overlay-nome { font-size: 0.82rem; }
+  .prof-overlay { padding: 0.85rem; }
+  .prof-actions { gap: 0.35rem; }
+  /* Alvo de toque mínimo 36px para acessibilidade em touchscreen */
+  .btn-sm, .prof-actions .btn-pdf {
+    font-size: 0.65rem;
+    padding: 0.42rem 0.65rem;
+    min-height: 2.25rem;   /* ≈ 36px — acima do mínimo recomendado para toque */
+  }
+
+  /* ── Turmas mobile ── */
+  .turmas-grid {
+    grid-template-columns: 1fr;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── Condições mobile: grid empilhado (um card por linha) ──
+     Scroll horizontal removido — evita cards esticados e altura desigual.
+     Dots e border-left da coluna creme ocultados no mobile. */
+  .condicoes-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow-x: visible;
+  }
+  .condicao-col {
+    min-width: unset;
+    scroll-snap-align: unset;
+    flex-shrink: unset;
+    padding: 3rem 1.75rem;
+  }
+  /* Remove a borda lateral verde — fica estranha em card de largura total */
+  .condicao-col--iniciantes {
+    border-left: none;
+  }
+
+  /* Dots: ocultos (não há scroll horizontal no mobile) */
+  .condicoes-dots {
+    display: none;
+  }
+
+  /* Linha decorativa verde: oculta no mobile */
+  .section-divider {
+    display: none;
+  }
+
+  /* ── Unidade mobile ── */
+  .unidade-card-destaque {
+    margin: 0 0.5rem;
+  }
+
+  /* ── Formulário mobile ── */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Footer mobile ── */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  /* ── Sede hero mobile ── */
+  .sede-hero {
+    height: 45vh;
+    min-height: 300px;
+  }
+
+  /* ── Sede sobre mobile ── */
+  .sede-sobre-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .sede-fotos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* ── Galeria mobile: 2 colunas ── */
+  .galeria-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Smartphones pequenos (≤ 480px) ─────────────────────── */
+@media (max-width: 480px) {
+
+  :root {
+    --section-gap: 3rem;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  /* ── Navbar telas muito pequenas — evita scroll horizontal ──
+     A fonte script "Integra Psicanálise" em 1.45rem é larga demais
+     para caber ao lado do hambúrguer em telas abaixo de ~380px. */
+  .logo-subtitulo { display: none; }           /* oculta "A Nova Escola" */
+  .logo-nome      { font-size: 1.15rem; }      /* reduz o nome da escola */
+  .navbar-inner   { gap: 0; }                  /* logo←→hambúrguer via space-between */
+
+  /* ── Loader telas muito pequenas ── */
+  .loader-logo  { width: 90px; height: 90px; }
+  .loader-texto { font-size: 1.3rem; }
+  .loader-bar   { width: 65px; }
+
+  /* ── Mural mobile pequeno: 2 colunas ── */
+  .mural-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .prof-bio { -webkit-line-clamp: 3; line-clamp: 3; }
+
+  /* Condições: ocupa quase toda a tela */
+  .condicao-col {
+    min-width: 92vw;
+    padding: 2.5rem 1.25rem;
+  }
+
+  /* Formulário: campo único */
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  /* Galeria: 1 coluna no mais estreito */
+  .galeria-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .galeria-placeholder,
+  .galeria-item {
+    height: 160px;
+  }
+
+  /* Sede fotos: 1 coluna */
+  .sede-fotos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Acordeão: padding menor */
+  .acordeao-header {
+    padding: 1rem 1.1rem;
+  }
+  .acordeao-content {
+    padding: 1.1rem;
+  }
+
+  /* Navbar: logo mais compacto */
+  .logo-nome { font-size: 1.2rem; }
+  .logo-subtitulo { display: none; }
+
+  /* Hero botões: texto menor */
+  .hero-buttons .btn {
+    font-size: 0.82rem;
+    padding: 0.85rem 1.25rem;
+  }
+
+  /* Back to top: menor */
+  #back-to-top {
+    width: 40px;
+    height: 40px;
+    bottom: 1.25rem;
+    right: 1.25rem;
+  }
+}
+
+/* ── Impressão ───────────────────────────────────────────── */
+@media print {
+  #navbar, #back-to-top, .menu-drawer, .menu-overlay,
+  .hero-buttons, .scroll-indicator {
+    display: none !important;
+  }
+  body { color: #000; background: #fff; }
+}
+
+/* ── Preferência por movimento reduzido (acessibilidade) ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* ============================================================
+   23. ANIMAÇÃO DA LOGO NOS BOTÕES
+   Flash elegante do símbolo Integra ao clicar em botões CTA,
+   currículo e contato. Criado dinamicamente via JS.
+   Watermark subliminar aparece no hover (::before).
+   ============================================================ */
+
+/* Garante que todos os botões tenham position:relative e overflow */
+.btn,
+.btn-pdf,
+.btn-social-ext {
+  position: relative;
+  overflow: hidden;
+}
+
+/* === Watermark subliminar — logo completa Integra aparece no hover ===
+   SVG idêntico ao page-loader, versão branca para uso como background.
+   Transição: scale 0.8→1 + fade opacity 0→0.13 com easing suave.      */
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-10 -10 220 220' fill='none'%3E%3Cg%3E%3Cpath d='M 44 108 A 58 58 0 1 1 156 108' stroke='white' stroke-width='4.5' stroke-linecap='round'/%3E%3Cpath d='M 100 50 Q 128 50 128 75 Q 128 98 100 100 Q 82 100 82 82 Q 82 66 96 64' stroke='white' stroke-width='3' stroke-linecap='round' opacity='0.9'/%3E%3Ccircle cx='100' cy='52' r='3.5' fill='white'/%3E%3Ccircle cx='100' cy='135' r='22' stroke='white' stroke-width='3.5'/%3E%3Ccircle cx='100' cy='135' r='11' stroke='white' stroke-width='2.5'/%3E%3Ccircle cx='100' cy='135' r='4.5' fill='%23A8C640'/%3E%3Ccircle cx='100' cy='22' r='3.5' fill='white' opacity='0.7'/%3E%3Ccircle cx='178' cy='105' r='3.5' fill='white' opacity='0.7'/%3E%3Ccircle cx='100' cy='190' r='4' fill='white' opacity='0.7'/%3E%3C/g%3E%3Ccircle cx='100' cy='100' r='90' stroke='white' stroke-width='1' opacity='0.15'/%3E%3C/svg%3E")
+    center / 52% no-repeat;
+  opacity: 0;
+  transform: scale(0.82) rotate(-8deg);
+  pointer-events: none;
+  transition:
+    opacity   0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+.btn:hover::before {
+  opacity: 0.13;
+  transform: scale(1) rotate(0deg);
+}
+
+/* === Elemento de flash injetado pelo JS ===
+   Bloom: escala 0.3→1.08→dissolve com leve rotação.
+   Duração 720ms — longa o suficiente para ser percebido, curta o
+   suficiente para não atrapalhar a interação.                        */
+.btn-logo-flash {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+  animation: btnLogoBloom 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* SVG idêntico ao page-loader — tamanho reduzido para caber no botão */
+.btn-logo-flash .btn-flash-logo {
+  width:     56px !important;
+  height:    56px !important;
+  min-width: 56px;
+  filter:
+    drop-shadow(0 0 8px rgba(168, 198, 64, 0.55))
+    drop-shadow(0 0 18px rgba(242, 230, 223, 0.3));
+  /* Cancela a animação loaderBreath (que seria infinita) —
+     o bloom do pai (.btn-logo-flash) já faz o efeito de entrada/saída */
+  animation: none !important;
+}
+
+/* Corrige o ponto de rotação do grupo interno ao escalar para 56px.
+   O loader original usa 100px 100px (válido a 140px); aqui usamos
+   transform-box:fill-box + center para girar ao redor do visual real. */
+.btn-logo-flash .loader-spin-group,
+.btn-logo-flash .loader-ring-pulse {
+  transform-box:    fill-box;
+  transform-origin: center;
+}
+
+/* Bloom elegante: nasce pequeno e girado → floresce → dissolve girando */
+@keyframes btnLogoBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.28) rotate(-15deg);
+  }
+  22% {
+    opacity: 1;
+    transform: scale(1.1) rotate(2deg);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5) rotate(8deg);
+  }
+}
+
+/* Ripple de clique — anel de luz que se expande do centro */
+.btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.2);
+  opacity: 0;
+  transform: scale(0);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity   0.45s ease;
+  pointer-events: none;
+}
+.btn:active::after {
+  transform: scale(1);
+  opacity: 1;
+  transition: none;  /* ativa instantaneamente no press */
+}
+
+
+/* ============================================================
+   24. MELHORIAS DE PERFORMANCE E MICRO-TRANSIÇÕES
+   Otimizações GPU, suavidade e micro-interações em todo o site.
+   ============================================================ */
+
+/* === Otimizações de composição GPU === */
+.hero-bg,
+.hero-content,
+.prof-overlay,
+.turma-card,
+.diferencial-card,
+.unidade-card-destaque,
+#navbar,
+.menu-drawer,
+#page-loader {
+  /* Força compositing layer — evita repaint durante animações */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* === Transição mais suave na variável global === */
+:root {
+  --transition-fast:   0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-silk:   0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* === Hero — efeito de entrada escalonado nos elementos === */
+.hero-seal {
+  animation: sealFloat 6s ease-in-out infinite,
+             fadeInDown 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-title {
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
+.hero-subtitle {
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+}
+.hero-buttons {
+  animation: fadeInUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+}
+
+/* === Navbar — micro-animação de entrada === */
+#navbar {
+  animation: fadeInDown 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* === Cards de diferencial — sombra suave ao hover === */
+.diferencial-card {
+  transition:
+    transform var(--transition-silk),
+    box-shadow var(--transition-silk),
+    background-color var(--transition);
+}
+.diferencial-card:hover {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 16px 48px rgba(86, 96, 67, 0.18);
+}
+
+/* === Cards de turma — micro lift === */
+.turma-card {
+  transition:
+    transform var(--transition-silk),
+    box-shadow var(--transition-silk),
+    border-color var(--transition);
+}
+.turma-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 48px rgba(86, 96, 67, 0.15);
+}
+
+/* === Botão back-to-top — micro-animação de pulso === */
+#back-to-top {
+  transition:
+    opacity var(--transition-silk),
+    transform var(--transition-bounce),
+    background-color var(--transition);
+}
+#back-to-top.visible {
+  animation: backTopBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes backTopBounce {
+  from { opacity: 0; transform: translateY(20px) scale(0.7); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+#back-to-top:hover {
+  transform: translateY(-4px) scale(1.1);
+}
+
+/* === Drawer link — transição mais fluida com spring === */
+.drawer-link {
+  transition:
+    color         0.25s ease,
+    background    0.25s ease,
+    border-color  0.25s ease,
+    transform     var(--transition-silk);
+}
+
+/* === Links do rodapé — underline deslizante === */
+footer a:not(.btn):not(.navbar-logo):not(.btn-social-ext) {
+  position: relative;
+  transition: color var(--transition);
+}
+footer a:not(.btn):not(.navbar-logo):not(.btn-social-ext)::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--cor-lima);
+  transition: width var(--transition-silk);
+}
+footer a:not(.btn):not(.navbar-logo):not(.btn-social-ext):hover::after {
+  width: 100%;
+}
+
+/* === Ícones de redes sociais no footer — hover com bounce === */
+.btn-social-ext {
+  transition:
+    transform   var(--transition-bounce),
+    background  var(--transition),
+    color       var(--transition);
+}
+.btn-social-ext:hover {
+  transform: translateY(-4px) scale(1.15);
+}
+
+/* === Acordeão — transição mais fluida === */
+.acordeao-panel {
+  transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === Formulário — inputs com micro-glow ao focar === */
+.contato-form input:focus,
+.contato-form textarea:focus,
+.contato-form select:focus {
+  outline: none;
+  border-color: var(--cor-lima);
+  box-shadow:
+    0 0 0 3px rgba(168, 198, 64, 0.18),
+    0 2px 12px rgba(168, 198, 64, 0.12);
+  transform: translateY(-1px);
+  transition:
+    border-color 0.2s ease,
+    box-shadow   0.3s ease,
+    transform    0.25s ease;
+}
+
+/* === Prof overlay mobile — delay de visibilidade para evitar
+       ativação acidental dos botões no primeiro toque === */
+.prof-overlay {
+  visibility: hidden;
+  /* Esconde visibilidade APÓS a transição de fade-out terminar (0.4s) */
+  transition:
+    opacity    0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    transform  0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s   linear 0.42s;
+}
+.prof-card:hover .prof-overlay,
+.prof-card.expanded .prof-overlay {
+  visibility: visible;
+  /* Torna visível IMEDIATAMENTE ao abrir (sem delay) */
+  transition:
+    opacity    0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    transform  0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s   linear 0s;
+}
+
+/* === Scroll indicator (seta hero) — transição mais spring === */
+.scroll-indicator {
+  transition:
+    opacity    var(--transition-silk),
+    transform  var(--transition-bounce);
+}
+.scroll-indicator:hover {
+  transform: translateX(-50%) translateY(6px);
+}
+
+/* === Section divider — expande com easing mais elegante === */
+.section-divider.visible {
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* === Unidade card — zoom da foto mais suave === */
+.unidade-foto img {
+  transition:
+    transform var(--transition-silk),
+    filter    var(--transition-silk);
+}
+.unidade-card-destaque:hover .unidade-foto img {
+  transform: scale(1.04);
+  filter: brightness(0.92);
+}
+
+/* === Input de formulário — labels com transição === */
+.form-field label {
+  transition:
+    color     var(--transition),
+    transform var(--transition);
+}
+.form-field:focus-within label {
+  color: var(--cor-lima);
+}
+
+/* === Pilar cards — animação de entrada com micro-spring === */
+.pilar-card {
+  transition:
+    transform   var(--transition-silk),
+    box-shadow  var(--transition-silk);
+}
+.pilar-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* === Modulo badge — micro giro no hover === */
+.modulo-badge {
+  transition:
+    transform    var(--transition-bounce),
+    background   var(--transition);
+}
+.acordeao.aberto .modulo-badge,
+.acordeao-header:hover .modulo-badge {
+  transform: scale(1.08) rotate(-3deg);
+}
+
+/* === Hero CTA — micro-pulse intensificado === */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow:
+      var(--shadow-btn),
+      0 0 0 0 rgba(168, 198, 64, 0.45);
+  }
+  50% {
+    box-shadow:
+      var(--shadow-btn),
+      0 0 20px 6px rgba(168, 198, 64, 0.22);
+  }
+}
+
+/* === Condicoes dots — transição mais suave com spring === */
+.condicoes-dot {
+  transition:
+    background-color var(--transition),
+    transform        var(--transition-bounce);
+}
+.condicoes-dot:hover {
+  background: rgba(86, 96, 67, 0.5) !important;
+  transform: scale(1.5);
+}
+
+/* === Prof card — cursor pointer mais explícito no mobile === */
+@media (hover: none) {
+  .prof-card {
+    cursor: pointer;
+  }
+  /* Garante que o lift do card no mobile seja mais contido */
+  .prof-card.expanded {
+    transform: translateY(-4px);
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 1.5px rgba(168, 198, 64, 0.5);
+  }
+}
+
+/* === Smooth scroll com offset correto no iOS === */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* === Imagens — transição de carregamento lazy === */
+img[loading="lazy"] {
+  transition:
+    opacity  0.45s ease,
+    filter   0.45s ease;
+}
+img[loading="lazy"]:not([src]) {
+  opacity: 0;
+  filter: blur(4px);
+}
+
+
+/* ============================================================
+   PRANCHETA (CLIPBOARD) — banner do curso
+   Estética de prancheta com clipe metálico em CSS puro,
+   papel creme e checklist das características do curso.
+   ============================================================ */
+
+/* Wrapper — espaço extra no topo para o clipe sobressair */
+.curso-banner {
+  position: relative;
+  margin-top: 3rem;
+  margin-bottom: 3.5rem;
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Board de madeira atrás do papel (pseudo-elemento) */
+.curso-banner::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: -4px;
+  right: -4px;
+  bottom: -10px;
+  background: linear-gradient(160deg, #6b4f2a 0%, #4a3520 100%);
+  border-radius: 10px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.32);
+  z-index: 0;
+}
+
+/* ── Clipe metálico ─────────────────────────────────────── */
+.prancheta-clip {
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90px;
+  height: 54px;
+  z-index: 3;
+  /* Corpo do clipe com gradiente metálico */
+  background: linear-gradient(170deg, #d4c4b0 0%, #a08870 40%, #7a6250 100%);
+  border-radius: 8px 8px 3px 3px;
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+}
+
+/* Abertura interna do clipe */
+.prancheta-clip::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 32px;
+  background: #fdf8f2;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+/* Encaixe superior do clipe (rebite) */
+.prancheta-clip::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 10px;
+  background: linear-gradient(170deg, #b09880, #7a6250);
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* ── Papel da prancheta ─────────────────────────────────── */
+.prancheta-papel {
+  position: relative;
+  z-index: 1;
+  background: #fdf8f2;                          /* papel creme */
+  border-radius: 6px;
+  border: 1px solid rgba(107, 79, 42, 0.14);
+  border-top: 4px solid var(--cor-verde);       /* faixa verde no topo */
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.85);
+  padding: 2.25rem 2.5rem 2rem;
+}
+
+/* ── Timbre: logo + nome da escola ──────────────────────── */
+.prancheta-escola {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed rgba(86, 96, 67, 0.2);  /* linha pontilhada estilo papel */
+}
+
+.prancheta-escola-nome {
+  display: block;
+  font-family: var(--fonte-serif);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--cor-verde);
+  line-height: 1.2;
+}
+
+.prancheta-escola-sub {
+  display: block;
+  font-size: 0.58rem;
+  color: rgba(86, 96, 67, 0.5);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── Título do curso ────────────────────────────────────── */
+.prancheta-titulo {
+  font-family: var(--fonte-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--cor-texto);
+  line-height: 1.3;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Checklist de características ───────────────────────── */
+.prancheta-lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.prancheta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+  color: var(--cor-texto);
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+/* Ícone de check — círculo verde com visto branco */
+.prancheta-check {
+  width: 22px;
+  height: 22px;
+  background: var(--cor-verde);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #fff;
+  font-size: 0.62rem;
+  box-shadow: 0 2px 6px rgba(86, 96, 67, 0.3);
+}
+
+/* Valores em destaque terracota */
+.prancheta-item strong {
+  color: var(--cor-terracota);
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   MÓDULOS — GRADE DE CARDS INTERATIVOS
+   Substitui os acordeões. Hover (desktop) ou tap (mobile)
+   revela o overlay com todo o conteúdo do módulo.
+   ============================================================ */
+
+/* Grid 3 colunas no desktop */
+.modulos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* ============================================================
+   MÓDULO CARD — versão off-white
+   Card branco com borda superior colorida. Hover/tap revela
+   um overlay escuro deslizante com todas as disciplinas.
+   ============================================================ */
+
+/* Card individual — fundo branco com acento verde no topo */
+.modulo-card {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  height: 360px;
+  cursor: pointer;
+  outline: none;
+  background: var(--cor-branco);                 /* fundo off-white */
+  border: 1px solid rgba(140, 50, 17, 0.10);     /* borda sutil terracota */
+  border-top: 3px solid var(--cor-terracota);    /* faixa terracota decorativa no topo */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  transition:
+    transform    var(--transition),
+    box-shadow   var(--transition),
+    border-color var(--transition);
+}
+
+/* Elevação no hover + reforço da borda verde */
+.modulo-card:hover,
+.modulo-card.expanded {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.13), 0 4px 16px rgba(0, 0, 0, 0.07);
+  border-color: var(--cor-terracota);             /* reforço terracota no hover */
+  border-top-color: var(--cor-terracota);
+}
+
+/* Foco por teclado */
+.modulo-card:focus-visible {
+  box-shadow: 0 0 0 3px rgba(168, 198, 64, 0.5);
+}
+
+/* Número decorativo de fundo — muito sutil em verde sobre branco */
+.modulo-card-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0.25rem 0.5rem;
+  pointer-events: none;
+}
+
+.modulo-card-num-bg {
+  font-family: var(--fonte-serif);
+  font-size: 8rem;
+  font-weight: 700;
+  color: rgba(140, 50, 17, 0.05);   /* terracota bem suave sobre fundo branco */
+  line-height: 1;
+  user-select: none;
+  letter-spacing: -0.02em;
+}
+
+/* ── Base — camada sempre visível (antes do hover) ─────── */
+.modulo-card-base {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  transition:
+    opacity   0.38s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base some quando o overlay aparece */
+.modulo-card:hover .modulo-card-base,
+.modulo-card.expanded .modulo-card-base {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+/* Badge já tem estilos globais (.modulo-badge) — ajuste de margem */
+.modulo-card .modulo-badge {
+  align-self: flex-start;
+  margin-bottom: 1rem;
+}
+
+/* Título visível na base do card — terracota sobre branco */
+.modulo-card-titulo {
+  font-family: var(--fonte-serif);
+  font-size: 1.28rem;
+  font-weight: 600;
+  color: var(--cor-terracota);      /* terracota: elegante sobre fundo branco */
+  line-height: 1.3;
+  margin-bottom: 0.9rem;
+}
+
+/* Lista de prévia das disciplinas — texto escuro suave */
+.modulo-preview {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.38rem;
+  flex: 1;
+}
+
+.modulo-preview li {
+  font-size: 0.78rem;
+  color: rgba(44, 26, 14, 0.58);    /* texto principal muted */
+  padding-left: 1rem;
+  position: relative;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+/* Traço antes de cada item da lista */
+.modulo-preview li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--cor-terracota);      /* terracota no marcador */
+  font-size: 0.7rem;
+  top: 0.05em;
+}
+
+/* Item que mostra quantidade extra de disciplinas */
+.modulo-preview-mais {
+  color: var(--cor-terracota) !important;
+  font-size: 0.73rem !important;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+}
+
+.modulo-preview-mais::before {
+  content: '' !important;   /* sem traço no item de contagem */
+}
+
+/* Texto de dica de interação */
+.modulo-hint {
+  font-size: 0.65rem;
+  color: var(--cor-terracota);
+  opacity: 0.7;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ── Overlay — revelado no hover (desktop) ou tap (mobile) ── */
+.modulo-overlay {
+  position: absolute;
+  inset: 0;
+  /* fundo terracota com gradiente sutil em profundidade */
+  background: linear-gradient(160deg, #8C3211 0%, #6b2509 100%);
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  visibility: hidden;
+  transition:
+    opacity    0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    transform  0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s   linear 0.44s;
+}
+
+/* Estado visível do overlay */
+.modulo-card:hover .modulo-overlay,
+.modulo-card.expanded .modulo-overlay {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition:
+    opacity    0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    transform  0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s   linear 0s;
+}
+
+/* Container interno — scrollável para módulos com muitas disciplinas */
+.modulo-overlay-inner {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;  /* scroll suave no iOS */
+  padding: 1.3rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(168, 198, 64, 0.3) transparent;
+}
+
+/* Scrollbar fina e discreta */
+.modulo-overlay-inner::-webkit-scrollbar { width: 3px; }
+.modulo-overlay-inner::-webkit-scrollbar-track { background: transparent; }
+.modulo-overlay-inner::-webkit-scrollbar-thumb {
+  background: rgba(168, 198, 64, 0.35);
+  border-radius: 2px;
+}
+
+/* Rótulo do módulo — ex: "MÓDULO 1" */
+.modulo-overlay-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cor-lima);
+  font-weight: 600;
+}
+
+/* Título do overlay */
+.modulo-overlay-titulo {
+  font-family: var(--fonte-serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--cor-creme);
+  line-height: 1.25;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.2rem;
+  border-bottom: 1px solid rgba(168, 198, 64, 0.2);
+}
+
+/* Lista de disciplinas no overlay */
+.modulo-overlay-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+}
+
+/* Item de disciplina — separados por linha sutil */
+.modulo-disciplina {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(242, 230, 223, 0.08);
+}
+
+.modulo-disciplina:last-child {
+  border-bottom: none;
+}
+
+/* Tracinho decorativo antes do nome */
+.modulo-disciplina::before {
+  content: '—';
+  color: var(--cor-lima);
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+/* Nome da disciplina — destaque suave */
+.modulo-disciplina-nome {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(242, 230, 223, 0.92);
+  line-height: 1.4;
+}
+
+/* Nota especial de cada módulo (dica/info) */
+.modulo-overlay-nota {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: rgba(168, 198, 64, 0.1);         /* fundo lima suave */
+  border-left: 2px solid var(--cor-lima);      /* borda lima lateral */
+  border-radius: 0 6px 6px 0;
+  font-size: 0.7rem;
+  color: rgba(242, 230, 223, 0.82);
+  line-height: 1.5;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.modulo-overlay-nota i {
+  color: var(--cor-lima);
+  font-size: 0.72rem;
+  margin-top: 0.15em;
+  flex-shrink: 0;
+}
+
+/* Botão CTA dentro do overlay — sempre no fundo */
+.modulo-overlay-inner > .btn {
+  margin-top: 0.85rem;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+
+/* ============================================================
+   UNIDADES — GRADE DE 4 CARDS
+   Substitui o card centralizado único. Responsivo: 4 > 2 > 1 col.
+   ============================================================ */
+
+/* Grid 4 colunas no desktop */
+.unidades-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+}
+
+/* Card de unidade — flex column para alinhar o botão sempre no fundo */
+.unidade-card {
+  background: var(--cor-branco);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  border: 1px solid rgba(86, 96, 67, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition:
+    transform   var(--transition),
+    box-shadow  var(--transition);
+}
+
+.unidade-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Foto do card de unidade */
+.unidade-card .unidade-foto {
+  height: 180px;
+  position: relative;
+  overflow: hidden;
+}
+
+.unidade-card .unidade-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.unidade-card:hover .unidade-foto img {
+  transform: scale(1.05);
+}
+
+/* ── Placeholder estilo mapa — unidades sem foto ainda ──── */
+.unidade-foto-placeholder {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: #ede8df;            /* papel de mapa: creme quente */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  transition: filter 0.45s ease;
+}
+
+.unidade-card:hover .unidade-foto-placeholder {
+  filter: brightness(1.05);
+}
+
+/* Grade de ruas — linhas finas de mapa */
+.unidade-foto-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(86, 96, 67, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(86, 96, 67, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+
+/* Ruas principais — faixas brancas centrais (horizontal + vertical) */
+.unidade-foto-placeholder::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.65) 0, rgba(255,255,255,0.65) 8px, transparent 8px),
+    linear-gradient(90deg, rgba(255,255,255,0.65) 0, rgba(255,255,255,0.65) 8px, transparent 8px);
+  background-size: 100% 50%, 50% 100%;
+  background-position: 0 50%, 50% 0;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* Ícone de pin — terracota com sombra */
+.unidade-foto-placeholder i {
+  position: relative;
+  z-index: 2;
+  font-size: 2.4rem;
+  color: var(--cor-terracota);
+  filter: drop-shadow(0 3px 8px rgba(140, 50, 17, 0.35));
+}
+
+/* Pill com o nome da cidade */
+.unidade-foto-placeholder span {
+  position: relative;
+  z-index: 2;
+  font-family: var(--fonte-serif);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--cor-texto);
+  background: rgba(255, 255, 255, 0.88);
+  padding: 0.22rem 0.8rem;
+  border-radius: 20px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.12);
+  letter-spacing: 0.04em;
+}
+
+/* Badge "UNIDADE" — nas unidades que não são a sede */
+.unidade-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: var(--cor-verde);
+  color: var(--cor-creme);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.28rem 0.75rem;
+  border-radius: 4px;
+  z-index: 3;
+}
+
+/* Conteúdo textual — flex grow para empurrar botão ao fundo */
+.unidade-card .unidade-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;           /* ocupa todo o espaço restante após a foto */
+}
+
+/* Botão sempre no fundo, independente da altura do texto */
+.unidade-card .unidade-body .btn {
+  margin-top: auto;
+}
+
+.unidade-card .unidade-body h3 {
+  font-family: var(--fonte-serif);
+  font-size: 1.1rem;
+  color: var(--cor-verde);
+  margin-bottom: 0.4rem;
+}
+
+.unidade-card .unidade-body p {
+  font-size: 0.82rem;
+  color: var(--cor-texto);
+  opacity: 0.72;
+  line-height: 1.55;
+  margin-bottom: 0.7rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.unidade-card .unidade-local {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.77rem;
+  color: var(--cor-terracota);
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.unidade-card .unidade-local i {
+  margin-top: 0.15em;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+}
+
+
+/* ============================================================
+   RESPONSIVIDADE — Novos componentes
+   ============================================================ */
+
+/* ── Tablet grande (≤ 1100px) ── */
+@media (max-width: 1100px) {
+  .unidades-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+  .modulos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* Prancheta em tablet — reduz padding lateral */
+  .prancheta-papel {
+    padding: 2rem 1.75rem 1.75rem;
+  }
+
+  .prancheta-titulo {
+    font-size: 1.3rem;
+  }
+}
+
+/* ── Mobile (≤ 640px) ── */
+@media (max-width: 640px) {
+  /* Prancheta no mobile — mais compacta */
+  .curso-banner {
+    margin-top: 2.5rem;
+  }
+
+  .prancheta-clip {
+    width: 72px;
+    height: 44px;
+    top: -28px;
+  }
+
+  .prancheta-clip::before {
+    width: 40px;
+    height: 26px;
+  }
+
+  .prancheta-papel {
+    padding: 1.75rem 1.4rem 1.5rem;
+  }
+
+  .prancheta-titulo {
+    font-size: 1.2rem;
+  }
+
+  .prancheta-item {
+    font-size: 0.84rem;
+  }
+
+  /* Módulos: 1 coluna no mobile */
+  .modulos-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .modulo-card {
+    height: 300px;
+  }
+
+  .modulo-card-num-bg {
+    font-size: 6rem;
+  }
+
+  .modulo-card-titulo {
+    font-size: 1.15rem;
+  }
+
+  /* Unidades: 1 coluna no mobile */
+  .unidades-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
+/* ============================================================
+   HERO SEM FOTO — unidades ainda sem imagem (Caruaru, CG, JP)
+   Fundo gradiente verde elegante em lugar da foto
+   ============================================================ */
+.sede-hero-bg--sem-foto {
+  background-image: linear-gradient(160deg, #3a4a2e 0%, #566043 50%, #2e3a22 100%);
+}
+
+/* Adiciona textura sutil com padrão de pontos */
+.sede-hero-bg--sem-foto::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(242, 230, 223, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+
+/* ============================================================
+   5º BLOCO — PRÓXIMA CIDADE (card de votação do Google Forms)
+   Faixa horizontal com fundo verde escuro + borda lima
+   ============================================================ */
+.unidade-proxima {
+  margin-top: 2rem;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #2e3a22 0%, #3d4e2d 60%, #2a3120 100%);
+  border: 1px solid rgba(168, 198, 64, 0.25);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Brilho decorativo sutil no canto superior */
+.unidade-proxima::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(168,198,64,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Layout interno: ícone | texto | botão */
+.unidade-proxima-inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 2.5rem;
+}
+
+/* Ícone de bússola grande */
+.unidade-proxima-icon {
+  flex-shrink: 0;
+  width: 64px; height: 64px;
+  background: rgba(168, 198, 64, 0.12);
+  border: 1px solid rgba(168, 198, 64, 0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem;
+  color: var(--cor-lima);
+  overflow: hidden; /* garante que o SVG não vaze */
+}
+
+/* Bússola SVG — preenche o ícone sem recortar o anel externo */
+.site-compass-svg {
+  width: 52px;
+  height: 52px;
+}
+
+/* Agulha oscilante — mesma animação amortecida da landing page */
+.site-compass-needle {
+  transform-box: fill-box;
+  transform-origin: center center;
+  animation: site-busca-norte 2.8s ease-in-out infinite;
+}
+
+@keyframes site-busca-norte {
+  0%   { transform: rotate(-38deg); }
+  16%  { transform: rotate(36deg);  }
+  30%  { transform: rotate(-26deg); }
+  43%  { transform: rotate(20deg);  }
+  55%  { transform: rotate(-14deg); }
+  65%  { transform: rotate(9deg);   }
+  74%  { transform: rotate(-5deg);  }
+  82%  { transform: rotate(3deg);   }
+  89%  { transform: rotate(-2deg);  }
+  95%  { transform: rotate(1deg);   }
+  100% { transform: rotate(-38deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-compass-needle { animation: none; transform: rotate(0deg); }
+}
+
+/* Texto central — cresce */
+.unidade-proxima-texto {
+  flex: 1;
+  min-width: 0;
+}
+
+.unidade-proxima-eyebrow {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cor-lima);
+  margin-bottom: 0.45rem;
+}
+
+.unidade-proxima-texto h3 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--cor-creme);
+  margin: 0 0 0.5rem;
+  line-height: 1.25;
+}
+
+.unidade-proxima-texto p {
+  font-size: 0.88rem;
+  color: rgba(242, 230, 223, 0.72);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.unidade-proxima-texto p strong {
+  color: var(--cor-creme);
+}
+
+/* CTA — botão */
+.unidade-proxima-cta {
+  flex-shrink: 0;
+}
+
+/* Botão específico do bloco próxima cidade */
+.btn-proxima {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: var(--cor-lima);
+  color: #1a2210;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.6rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(168, 198, 64, 0.28);
+}
+
+.btn-proxima:hover {
+  background: #bcd94a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(168, 198, 64, 0.4);
+}
+
+/* Responsividade do bloco próxima cidade */
+@media (max-width: 860px) {
+  .unidade-proxima-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.75rem 1.5rem;
+    gap: 1.25rem;
+  }
+  .unidade-proxima-cta {
+    width: 100%;
+  }
+  .btn-proxima {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+
+/* ============================================================
+   BOTÃO FLUTUANTE DE WHATSAPP
+   Bolha verde fixa no canto inferior direito, responsiva
+   ============================================================ */
+.whatsapp-float {
+  position: fixed;
+  bottom: 1.75rem;
+  right: 1.75rem;
+  z-index: 9000;
+
+  /* Dimensões */
+  width: 56px; height: 56px;
+  border-radius: 50%;
+
+  /* Visual */
+  background: #25D366;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45), 0 2px 6px rgba(0,0,0,0.18);
+
+  /* Layout interno */
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.55rem;
+
+  /* Texto expandido (tooltip lateral) */
+  overflow: hidden;
+  text-decoration: none;
+
+  transition: width 0.28s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.22s,
+              background 0.2s;
+}
+
+/* Pulso de atenção ao carregar */
+.whatsapp-float::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(37, 211, 102, 0.55);
+  animation: wpp-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+
+@keyframes wpp-pulse {
+  0%   { transform: scale(1);   opacity: 0.8; }
+  70%  { transform: scale(1.7); opacity: 0; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Ícone sempre visível */
+.whatsapp-float i {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  margin-left: 0; /* centralize quando só ícone */
+  transition: margin 0.28s;
+}
+
+/* Label expandida — oculta por padrão */
+.whatsapp-float-label {
+  font-family: var(--fonte-corpo);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  /* flex: 0 0 0 + min-width: 0 garante que o label ocupe 0px real no flex
+     (só max-width:0 não é suficiente — o offsetWidth ainda vaza para ~34px
+     e empurra o ícone para fora do centro do botão) */
+  flex: 0 0 0px;
+  min-width: 0;
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: flex-basis 0.28s, max-width 0.28s, opacity 0.22s, margin 0.28s;
+  margin-left: 0;
+}
+
+/* Hover: expande com label */
+.whatsapp-float:hover {
+  width: auto;
+  padding: 0 1.25rem;
+  border-radius: 28px;
+  background: #1da851;
+  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.55);
+}
+
+.whatsapp-float:hover i {
+  margin-right: 0.45rem;
+}
+
+.whatsapp-float:hover .whatsapp-float-label {
+  flex: 0 0 auto;   /* permite crescer no hover */
+  max-width: 160px;
+  opacity: 1;
+  margin-left: 0;
+}
+
+/* Mobile: mantém só ícone sem expansão */
+@media (max-width: 600px) {
+  .whatsapp-float {
+    width: 52px; height: 52px;
+    bottom: 1.25rem; right: 1.25rem;
+    font-size: 1.4rem;
+  }
+  .whatsapp-float:hover {
+    width: 52px;
+    padding: 0;
+    border-radius: 50%;
+  }
+  .whatsapp-float:hover .whatsapp-float-label {
+    display: none;
+  }
+  .whatsapp-float:hover i {
+    margin-right: 0;
+  }
+}
+
+
+/* Animação de atenção — chacoalha suavemente para chamar o visitante */
+@keyframes wa-wiggle {
+  0%         { transform: rotate(0deg)   scale(1);    }
+  8%         { transform: rotate(-18deg) scale(1.08); }
+  20%        { transform: rotate(16deg)  scale(1.08); }
+  32%        { transform: rotate(-13deg) scale(1.05); }
+  44%        { transform: rotate(10deg)  scale(1.03); }
+  54%        { transform: rotate(-7deg)  scale(1.02); }
+  63%        { transform: rotate(5deg)   scale(1.01); }
+  71%        { transform: rotate(-3deg)  scale(1);    }
+  79%        { transform: rotate(2deg)   scale(1);    }
+  86%        { transform: rotate(-1deg)  scale(1);    }
+  92%        { transform: rotate(0.5deg) scale(1);    }
+  100%       { transform: rotate(0deg)   scale(1);    }
+}
+
+.whatsapp-float.wa-atencao {
+  animation: wa-wiggle 0.9s ease-in-out;
+}
+
+
+/* ── Modulo card — comportamento de toque (mobile/tablet) ── */
+@media (hover: none) {
+  /* Indica visualmente que o card é tocável */
+  .modulo-card {
+    cursor: pointer;
+  }
+
+  /* Estado expandido no toque — elevação mais contida que o desktop */
+  .modulo-card.expanded {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14), 0 3px 10px rgba(0, 0, 0, 0.08);
+    border-top-color: var(--cor-terracota);
+  }
+
+  /* Troca texto da dica: "passar o mouse" → "toque" */
+  .modulo-hint {
+    opacity: 0.85;
+  }
+}
