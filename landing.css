@@ -1371,7 +1371,7 @@
    ════════════════════════════════════════════════════════════════ */
 #lp-back-to-top {
   position: fixed;
-  bottom: 9rem;
+  bottom: 5.75rem;
   right: 1.75rem;
   width: 44px;
   height: 44px;
@@ -1406,19 +1406,30 @@
    14. WHATSAPP FLOAT — ANIMAÇÃO DE ATENÇÃO (landing.js)
    Classe .lp-wa-atencao é adicionada/removida pelo JavaScript.
    ════════════════════════════════════════════════════════════════ */
+/* Dois "toques" de telefone com pausa entre eles */
 @keyframes lp-wa-wiggle {
-  0%   { transform: rotate(0deg)   scale(1); }
-  15%  { transform: rotate(-12deg) scale(1.12); }
-  30%  { transform: rotate(12deg)  scale(1.14); }
-  45%  { transform: rotate(-8deg)  scale(1.1); }
-  60%  { transform: rotate(8deg)   scale(1.07); }
-  75%  { transform: rotate(-4deg)  scale(1.03); }
-  90%  { transform: rotate(4deg)   scale(1.01); }
-  100% { transform: rotate(0deg)   scale(1); }
+  /* 1º toque */
+  0%   { transform: rotate(0deg)   scale(1);    }
+  5%   { transform: rotate(-20deg) scale(1.14); }
+  12%  { transform: rotate(20deg)  scale(1.14); }
+  19%  { transform: rotate(-15deg) scale(1.1);  }
+  26%  { transform: rotate(15deg)  scale(1.1);  }
+  33%  { transform: rotate(-8deg)  scale(1.04); }
+  38%  { transform: rotate(0deg)   scale(1);    }
+  /* pausa entre toques */
+  48%  { transform: rotate(0deg)   scale(1);    }
+  /* 2º toque */
+  53%  { transform: rotate(-20deg) scale(1.14); }
+  60%  { transform: rotate(20deg)  scale(1.14); }
+  67%  { transform: rotate(-15deg) scale(1.1);  }
+  74%  { transform: rotate(15deg)  scale(1.1);  }
+  81%  { transform: rotate(-8deg)  scale(1.04); }
+  87%  { transform: rotate(0deg)   scale(1);    }
+  100% { transform: rotate(0deg)   scale(1);    }
 }
 
 .lp-body .whatsapp-float.lp-wa-atencao {
-  animation: lp-wa-wiggle 0.75s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: lp-wa-wiggle 1.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 

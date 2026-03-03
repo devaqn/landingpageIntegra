@@ -144,16 +144,20 @@ function initLpBackToTop() {
 
 /* ════════════════════════════════════════════════════════════════
    4. WHATSAPP FLOAT — ANIMAÇÃO DE ATENÇÃO
-   Faz o botão flutuante "chacoalhar" suavemente para chamar
+   Faz o botão flutuante "tocar como um telefone" para chamar
    atenção do visitante.
    — Primeira animação: 2,5s após o carregamento
-   — Repetição: a cada 7s
+   — Repetição periódica: a cada 7s
+   — Triggered por scroll: dispara ao descer a página (máx 1x/5s)
    ════════════════════════════════════════════════════════════════ */
 function initLpWhatsAppFloat() {
   const btn = document.querySelector('.whatsapp-float');
   if (!btn) return;
 
-  /* Garante que a animação não seja repetida se já estiver ativa */
+  /* Não anima se o usuário prefere movimento reduzido */
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  /* Garante que a animação não sobreponha uma já ativa */
   function wiggle() {
     if (btn.classList.contains('lp-wa-atencao')) return;
     btn.classList.add('lp-wa-atencao');
@@ -162,11 +166,24 @@ function initLpWhatsAppFloat() {
     }, { once: true });
   }
 
-  /* Não anima se o usuário prefere movimento reduzido */
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
+  /* Animação inicial e periódica */
   setTimeout(wiggle, 2500);
   setInterval(wiggle, 7000);
+
+  /* Trigger por scroll: dispara ao rolar para baixo, máximo 1x a cada 5s */
+  let lastScrollWiggle = 0;
+  let prevScrollY = window.scrollY;
+
+  window.addEventListener('scroll', () => {
+    const currentY = window.scrollY;
+    const now = Date.now();
+
+    if (currentY > prevScrollY && now - lastScrollWiggle > 5000) {
+      lastScrollWiggle = now;
+      wiggle();
+    }
+    prevScrollY = currentY;
+  }, { passive: true });
 }
 
 
